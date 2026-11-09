@@ -119,7 +119,7 @@ tr.click{cursor:pointer}
 .drawer td{white-space:normal}.drawer .tw{margin:0 -20px -20px}
 .drawer td.n{white-space:nowrap}
 .p-pos{background:#ECECCB;color:#4b4c00}
-.grow{flex:1;min-width:240px}
+.grow{flex:1;min-width:180px}
 .prod{display:flex;align-items:center;gap:12px}
 .th{width:36px;height:36px;border-radius:8px;flex:none;overflow:hidden;border:1px solid var(--line);display:block}
 .th img,.pimg img{width:100%;height:100%;object-fit:cover;display:block}
@@ -259,7 +259,7 @@ function rangeFor(key) {
 }
 
 const S = {
-  preset: "30d", from: "2026-10-01", to: "2026-11-06", channel: "all", loc: "", staff: "", stockView: "catalogue", stockQ: "", stockRange: "", stockState: "", compare: true,
+  preset: "30d", from: "2026-10-01", to: "2026-11-06", channel: "all", loc: "", staff: "", stockView: "catalogue", stockQ: "", stockRange: "", stockState: "", stockShow: "", compare: true,
   f: { range: "", size: "", colour: "", prov: "", code: "", q: "" }, sort: { k: "rev", d: -1 }, yarnTab: "recipes"
 };
 try { Object.assign(S, JSON.parse(localStorage.getItem("gk-state") || "{}")); } catch (e) {}
@@ -411,7 +411,6 @@ async function loadAll() {
   /* catalogue = retail variants (the store that holds stock) */
   CATALOG = []; BY_SKU = {}; STOCK = {};
   for (const v of stock) {
-    if (v.product_status === "archived") continue;
     const opts = [v.option1, v.option2, v.option3].filter(Boolean);
     const size = opts.find(o => SIZE_RE.test(o.trim())) || "";
     const col = tidyColour(opts.find(o => o !== size) || "");
@@ -763,12 +762,17 @@ const sizeSort = (a, b) => (SIZE_ORDER.indexOf(a) + 1 || 99) - (SIZE_ORDER.index
 const stPill = st => st === "out" ? `<span class="pill p-bad">Out of stock</span>` : st === "low" ? `<span class="pill p-warn">Low stock</span>` : `<span class="pill p-good">In stock</span>`;
 const qtyCls = s => s.state === "out" ? "q-out" : s.state === "low" ? "q-low" : "";
 
+/* only products on sale in Shopify by default; archived, draft and unlisted sit in their own view */
+const onSale = p => !p.status || p.status === "active";
+const inShow = p => S.stockShow === "hidden" ? !onSale(p) : onSale(p);
+const STATUS_LBL = { archived: "Archived", draft: "Draft", unlisted: "Unlisted" };
+
 function stockProducts() {
   const q = S.stockQ.toLowerCase(), m = new Map();
-  CATALOG.filter(p => p.r !== "Other" && p.inW).forEach(p => {
+  CATALOG.filter(p => p.r !== "Other" && p.inW && inShow(p)).forEach(p => {
     if (S.stockRange && p.r !== S.stockRange) return;
     if (q && !(p.t + " " + p.sku + " " + p.col).toLowerCase().includes(q)) return;
-    const g = m.get(p.t) || { t: p.t, r: p.r, img: p.img, col: p.col, vars: [] }; g.vars.push(p); m.set(p.t, g);
+    const g = m.get(p.t) || { t: p.t, r: p.r, img: p.img, col: p.col, status: p.status, vars: [] }; g.vars.push(p); m.set(p.t, g);
   });
   return [...m.values()].map(g => {
     const st = g.vars.map(v => STOCK[v.sku]);
@@ -776,7 +780,8 @@ function stockProducts() {
     g.out = st.filter(x => x.state === "out").length; g.low = st.filter(x => x.state === "low").length;
     g.state = g.out ? "out" : g.low ? "low" : "ok";
     return g;
-  }).filter(g => !S.stockState || (S.stockState === "out" ? g.out : S.stockState === "low" ? g.low || g.out : g.state === "ok"))
+  }).filter(g => S.stockShow !== "hidden" || g.vars.some(v => STOCK[v.sku].avail !== 0))
+    .filter(g => !S.stockState || (S.stockState === "out" ? g.out : S.stockState === "low" ? g.low || g.out : g.state === "ok"))
     .sort((a, b) => a.avail - b.avail || b.s30 - a.s30);
 }
 
@@ -788,7 +793,8 @@ function matrix(g) {
 }
 
 VIEWS.products = () => {
-  const all = CATALOG.filter(p => p.r !== "Other" && p.inW).map(p => STOCK[p.sku]);
+  const all = CATALOG.filter(p => p.r !== "Other" && p.inW && inShow(p)).map(p => STOCK[p.sku]);
+  const hiddenPairs = CATALOG.filter(p => p.r !== "Other" && !onSale(p)).reduce((s, p) => s + Math.max(0, STOCK[p.sku].avail), 0);
   const units = all.reduce((s, x) => s + x.avail, 0), out = all.filter(x => x.state === "out").length, low = all.filter(x => x.state === "low").length, s30 = all.reduce((s, x) => s + x.s30, 0);
   const ranges = [...new Set(CATALOG.map(p => p.r))].filter(r => r !== "Other").sort();
   const prods = stockProducts();
@@ -796,7 +802,7 @@ VIEWS.products = () => {
   if (S.stockView === "catalogue") {
     body = `<div class="cat">${prods.map(g => `
       <article class="pcard" data-prod="${esc(g.t)}" tabindex="0">
-        <div class="pimg" style="background:${hexFor(g.col)}">${g.img ? `<img src="${g.img}" alt="${esc(g.t)}" loading="lazy" onerror="this.remove()">` : ""}<span class="ptag">${stPill(g.state)}</span></div>
+        <div class="pimg" style="background:${hexFor(g.col)}">${g.img ? `<img src="${g.img}" alt="${esc(g.t)}" loading="lazy" onerror="this.remove()">` : ""}<span class="ptag">${STATUS_LBL[g.status] ? `<span class="pill p-warn">${STATUS_LBL[g.status]}</span>` : stPill(g.state)}</span></div>
         <div class="pbody">
           <div><h3>${esc(g.t)}</h3><span class="muted">${esc(g.r)} · ${g.vars.length} variant${g.vars.length > 1 ? "s" : ""}</span></div>
           <div class="pnum"><div><span class="lbl">Available</span><b>${N(g.avail)}</b></div><div><span class="lbl">Sold 30 days</span><b>${N(g.s30)}</b></div></div>
@@ -819,10 +825,11 @@ VIEWS.products = () => {
   <section class="card c12"><div class="bar">
     <div class="seg" role="group" aria-label="Location"><button data-sl="" class="${!S.stockLoc ? "on" : ""}">All locations</button>${LOCS.map(l => `<button data-sl="${l.id}" class="${S.stockLoc === l.id ? "on" : ""}">${l.name.replace("Gilnokie ", "")}</button>`).join("")}</div>
     <div class="seg" role="group" aria-label="Layout"><button data-sv="catalogue" class="${S.stockView === "catalogue" ? "on" : ""}">Catalogue</button><button data-sv="table" class="${S.stockView === "table" ? "on" : ""}">Table</button></div>
-    <input class="sel grow" id="sq" placeholder="Search product, SKU or colour" value="${esc(S.stockQ)}">
+    <input class="sel grow" id="sq" placeholder="Search products" value="${esc(S.stockQ)}">
     <select class="sel" data-s="stockRange" aria-label="Range">${opts(ranges, S.stockRange, "All ranges")}</select>
+    <select class="sel" data-s="stockShow" aria-label="Shopify status"><option value="">On sale</option><option value="hidden" ${S.stockShow === "hidden" ? "selected" : ""}>Not on sale</option></select>
     <select class="sel" data-s="stockState" aria-label="Stock status"><option value="">All stock</option>${[["low", "Low or out"], ["out", "Out of stock"], ["ok", "In stock"]].map(([v, l]) => `<option value="${v}" ${S.stockState === v ? "selected" : ""}>${l}</option>`).join("")}</select>
-    <span class="muted">${N(prods.length)} products · lowest first</span>
+    <span class="muted">${N(prods.length)} product${prods.length === 1 ? "" : "s"}</span>
     <span class="grow-sp"></span><button class="btn ghost" data-sa="count">Stock take</button><button class="btn" data-sa="production">Add production</button>
   </div></section>
   ${body}`;
