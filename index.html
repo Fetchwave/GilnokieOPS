@@ -497,15 +497,16 @@ async function loadAll() {
     status: t.status === "done" ? "Done" : t.status === "draft" ? "Draft" : "Cancelled" }));
 
   /* system checks */
-  const [neg, mism, pend, fail, unm] = await Promise.all([
+  const [neg, mism, pend, fail, unm, conn] = await Promise.all([
     Promise.resolve(Object.values(STOCK).reduce((s, k) => s + Object.entries(k.byLoc).filter(([id, q]) => q < 0 && LOCS.some(l => l.id === id)).length, 0)),
     sb.from("stock_mismatches").select("variant_id", { count: "exact", head: true }),
     sb.from("stock_movements").select("id", { count: "exact", head: true }).eq("push_status", "pending"),
     sb.from("stock_movements").select("id", { count: "exact", head: true }).eq("push_status", "failed"),
-    ROLE === "admin" ? sb.from("order_lines").select("line_id", { count: "exact", head: true }).is("variant_id", null) : Promise.resolve({ count: null })
+    ROLE === "admin" ? sb.from("order_lines").select("line_id", { count: "exact", head: true }).is("variant_id", null) : Promise.resolve({ count: null }),
+    sb.rpc("connection_status")
   ]);
   CHECKS = { negatives: neg, mismatches: mism.count ?? 0, pending: pend.count ?? 0, failed: fail.count ?? 0, unmatched: unm.count,
-    noSku: CATALOG.filter(p => !p.realSku).length, noBarcode: CATALOG.filter(p => !p.barcode).length };
+    noSku: CATALOG.filter(p => !p.realSku).length, noBarcode: CATALOG.filter(p => !p.barcode).length, conn: conn.data || [] };
 }
 
 /* ---- push to Shopify straight after a change (the scheduler also does it every minute) ---- */
@@ -1081,14 +1082,20 @@ async function saveEvent() {
 }
 
 /* ---------- system (live) ---------- */
+const ago = d => { const m = Math.round((Date.now() - new Date(d)) / 60000); return m < 1 ? "just now" : m < 60 ? m + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " days ago"; };
+const connRow = c => {
+  const what = c.store_id === "retail" ? "Orders, refunds and products. Stock is sent back to this store" : "Orders and refunds. Wholesale orders take stock from the Factory";
+  const hook = c.last_webhook ? `Last update from Shopify ${ago(c.last_webhook)}` : "No updates received from Shopify yet";
+  const pill = c.webhook_errors ? `<span class="pill p-bad">Errors</span>` : c.last_webhook ? `<span class="pill p-good">Connected</span>` : `<span class="pill p-warn">Waiting</span>`;
+  return `<div class="row"><span><b>${esc(c.store_name)}</b><div class="muted">${what}</div><div class="muted">${hook} · ${N(c.orders)} orders since 1 Nov</div></span>${pill}</div>`;
+};
 VIEWS.system = () => {
   const pushOn = SETTINGS.push_enabled === true, start = SETTINGS.stock_start ? new Date(SETTINGS.stock_start) : null;
   const pill = (n, okText) => n ? `<span class="pill p-bad">${N(n)}</span>` : `<span class="pill p-good">${okText || "0"}</span>`;
   return `<div class="grid">
     <section class="card c6"><h2>Connections</h2>
       <div class="list">
-        <div class="row"><span><b>Shopify retail</b><div class="muted">Orders, refunds and products by webhook. Stock pushed back by the Gilnokie Ops app</div></span><span class="pill p-good">Connected</span></div>
-        <div class="row"><span><b>Shopify wholesale</b><div class="muted">Orders, refunds and products by webhook</div></span><span class="pill p-good">Connected</span></div>
+        ${(CHECKS.conn || []).map(connRow).join("")}
         <div class="row"><span><b>Stock tracking started</b><div class="muted">Sales after this moment move stock</div></span><b>${start ? dLong(start) : "Not started"}</b></div>
         <div class="row"><span><b>Push to Shopify</b><div class="muted">Changes waiting: ${N(CHECKS.pending)}</div></span>${pushOn ? `<span class="pill p-good">On</span>` : `<span class="pill p-warn">Paused</span>`}</div>
       </div></section>
@@ -1181,7 +1188,7 @@ VIEWS.yarn = () => {
   ${body}`;
 };
 
-VIEWS.system = () => `
+if (!VIEWS.system) VIEWS.system = () => `
   <div class="grid">
     <section class="card c6"><h2>Store connections</h2>
       <div class="list">
