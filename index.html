@@ -146,20 +146,56 @@ tr.click{cursor:pointer}
 .pimg.big{flex:none;width:100%}
 .drawer .kv{grid-template-columns:200px 1fr}
 .pimg,.pimg.big{aspect-ratio:1/1}
+.p-tag{background:#111;color:var(--volt);font-weight:700}
+.grow-sp{flex:1}
+.form{display:grid;grid-template-columns:140px 1fr;gap:12px 16px;align-items:center}
+.form label{font-weight:700;color:var(--mute);font-size:13px}
+.form .sel,.form .inp{width:100%}
+.qty{display:inline-flex;align-items:center;gap:10px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-weight:800;cursor:pointer}
+.qty b{min-width:24px;text-align:center}
+.evsum{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.evsum div{background:var(--paper);border-radius:12px;padding:12px}
+.evsum .lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.evsum b{font:600 26px/1.1 var(--display)}
+.drawer th.n,.drawer td.n{width:64px;padding-left:6px;padding-right:14px}
+.drawer .prod span{min-width:0}
+.drawer .th{width:32px;height:32px}
+
+/* ===== live: login gate, loading, toasts ===== */
+#gate{position:fixed;inset:0;background:var(--ink);z-index:50;display:none;place-items:center;padding:16px}
+#gate.on{display:grid}
+body.locked .side,body.locked main{visibility:hidden}
+.login{background:#161616;border:1px solid #262626;border-radius:18px;padding:32px;width:min(380px,100%);display:flex;flex-direction:column;gap:12px;color:#fff}
+.login .brand{padding:0 0 8px}
+.login h2{font:600 24px var(--display);margin:8px 0 4px;text-transform:uppercase}
+.login label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9a}
+.login .inp{background:#0e0e0e;border-color:#2c2c2c;color:#fff;height:44px;border-radius:12px}
+.login .btn{height:44px;margin-top:8px}
+.login .pw{margin-top:8px;font-size:12px;color:#8a8a8a}.login .pw b{color:#fff}.login .pw i{font-style:normal;color:var(--volt)}
+.err{color:#ff8a8a;font-weight:600;min-height:1em;margin:0}
+.card .err{color:var(--bad)}
+.loading{color:#fff;display:flex;align-items:center;gap:12px;font-weight:600}
+.spin{width:22px;height:22px;border:3px solid #333;border-top-color:var(--volt);border-radius:50%;animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--volt);padding:12px 18px;border-radius:999px;font-weight:700;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.bad{color:#ff8a8a}
+.qin{width:56px;height:30px;border:1px solid var(--line);border-radius:8px;text-align:center;font-weight:700}
+.x{border:0;background:none;color:var(--mute);font-weight:800;cursor:pointer;font-size:14px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.who{font-size:12px;color:#9a9a9a;word-break:break-all}
+body[data-role="factory"] .nav a[href="#dashboard"],body[data-role="factory"] .nav a[href="#sales"],body[data-role="factory"] .nav a[href="#orders"],body[data-role="factory"] .nav a[href="#wholesale"]{display:none}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
-</head><body>
-<aside class="side"><div class="brand"><svg viewBox="0 0 210 44" role="img" aria-label="Gilnokie"><path fill="#fff" d="M2 2h6v6h4V2h6v6h4V2h6v40l-13-8-13 8z"/><text x="38" y="35" fill="#fff" font-family="Jost, Futura, sans-serif" font-weight="700" font-size="32" letter-spacing="1">GILNOKIE</text></svg><small>Operations</small></div><nav class="nav"><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span>Dashboard</span></a><a href="#sales"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Sales reports</span></a><a href="#orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l2 4v16H4V6z"/><path d="M4 6h16M9 11h6"/></svg><span>Orders</span></a><a href="#wholesale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg><span>Wholesale accounts</span></a><div class="sep"></div><a href="#products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span>Stock</span></a><a href="#yarn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5 8c4 1 10 1 14 0M4 13c5 1 11 1 16 0M7 18c3 .6 7 .6 10 0"/></svg><span>Yarn & production</span></a><div class="sep"></div><a href="#system"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3.1 15H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9 4.6V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.3z"/></svg><span>System</span></a></nav>
-<a class="foot" href="#system" style="text-decoration:none"><span>Powered by</span><b>Fetch<i>wave</i></b></a></aside>
-<main><div class="top"><h1 id="title">Dashboard</h1><span class="sample">Sample data</span><div id="ctl" style="width:100%"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head><body class="locked"><div id="gate" class="on"></div>
+<aside class="side"><div class="brand"><svg viewBox="0 0 210 44" role="img" aria-label="Gilnokie"><path fill="#fff" d="M2 2h6v6h4V2h6v6h4V2h6v40l-13-8-13 8z"/><text x="38" y="35" fill="#fff" font-family="Jost, Futura, sans-serif" font-weight="700" font-size="32" letter-spacing="1">GILNOKIE</text></svg><small>Operations</small></div><nav class="nav"><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span>Dashboard</span></a><a href="#sales"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Sales reports</span></a><a href="#orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l2 4v16H4V6z"/><path d="M4 6h16M9 11h6"/></svg><span>Orders</span></a><a href="#wholesale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg><span>Wholesale accounts</span></a><div class="sep"></div><a href="#products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span>Stock</span></a><a href="#transfers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg><span>Transfers</span></a><a href="#events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Events</span></a><a href="#yarn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5 8c4 1 10 1 14 0M4 13c5 1 11 1 16 0M7 18c3 .6 7 .6 10 0"/></svg><span>Yarn & production</span></a><div class="sep"></div><a href="#system"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3.1 15H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9 4.6V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.3z"/></svg><span>System</span></a></nav>
+<div class="foot"><span class="who" id="who"></span><a href="#system" style="text-decoration:none"><span style="font-size:11px;color:#8a8a8a;text-transform:uppercase;letter-spacing:.12em">Powered by</span><br><b>Fetch<i>wave</i></b></a></div></aside>
+<main><div class="top"><h1 id="title">Dashboard</h1><div id="ctl" style="width:100%"></div></div>
 <div class="view" id="view"></div></main>
 <aside class="drawer" id="drawer" aria-label="Order details"></aside>
-<script>/* ===== SAMPLE DATA LAYER =====
-   Products are Gilnokie's real catalogue (from the two Shopify exports).
-   Orders, customers, yarn stock and production runs are generated samples.
-   On go-live this whole file is replaced by Supabase queries. */
-const CATALOG = [{"sku":"0323015391","t":"Christmas Doodles - Crew Height Sock","r":"Crew","size":"8-12","col":"Cream","rp":165.0,"inR":1,"inW":1,"q":50,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Sports_Christmas_Doodle_F45.jpg?width=400"},{"sku":"0322015391","t":"Christmas Doodles - Crew Height Sock","r":"Crew","size":"3-7","col":"Cream","rp":165.0,"inR":1,"inW":1,"q":50,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Sports_Christmas_Doodle_F45.jpg?width=400"},{"sku":"0323041021","t":"Classic Christmas - Crew Height Sock","r":"Crew","size":"8-12","col":"Burgundy","rp":165.0,"inR":1,"inW":1,"q":50,"cc":"041","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Sports_Classic_Christmas_F45.jpg?width=400"},{"sku":"0322041021","t":"Classic Christmas - Crew Height Sock","r":"Crew","size":"3-7","col":"Burgundy","rp":165.0,"inR":1,"inW":1,"q":50,"cc":"041","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Sports_Classic_Christmas_F45.jpg?width=400"},{"sku":"1223002391","t":"Holly Trainer - Half-Crew Height","r":"Half-Crew","size":"8-12","col":"White","rp":155.0,"inR":1,"inW":1,"q":50,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Trainer_Holly_F45.jpg?width=400"},{"sku":"1222002391","t":"Holly Trainer - Half-Crew Height","r":"Half-Crew","size":"3-7","col":"White","rp":155.0,"inR":1,"inW":1,"q":50,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Trainer_Holly_F45.jpg?width=400"},{"sku":"0323002391","t":"Holly Sports - Crew Height Sock","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":1,"q":50,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Sports_Holly_F45_b200acb1-7e3d-4386-8f32-7e05396ec5ec.jpg?width=400"},{"sku":"0322002391","t":"Holly Sports - Crew Height Sock","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":1,"q":50,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Sports_Holly_F45_b200acb1-7e3d-4386-8f32-7e05396ec5ec.jpg?width=400"},{"sku":"1413004341","t":"Digits - Blue with Stripes","r":"Toe Socks","size":"8-12","col":"One Colour","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_Blue_Stripe_F45.jpg?width=400"},{"sku":"1412004341","t":"Digits - Blue with Stripes","r":"Toe Socks","size":"3-7","col":"One Colour","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_Blue_Stripe_F45.jpg?width=400"},{"sku":"0933001021","t":"Nano Sports - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"Black","rp":165.0,"inR":1,"inW":1,"q":25,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sports-crew-height-socks-2-colours-8881107.jpg?width=400"},{"sku":"0933002011","t":"Nano Sports - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":1,"q":18,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sports-crew-height-socks-2-colours-5282097.jpg?width=400"},{"sku":"0932001021","t":"Nano Sports - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"Black","rp":165.0,"inR":1,"inW":1,"q":23,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sports-crew-height-socks-2-colours-8881107.jpg?width=400"},{"sku":"0932002011","t":"Nano Sports - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":1,"q":25,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sports-crew-height-socks-2-colours-5282097.jpg?width=400"},{"sku":"1733002011","t":"Nano Trainer - Half Crew-Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"White","rp":155.0,"inR":1,"inW":1,"q":21,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-695856.jpg?width=400"},{"sku":"1733001021","t":"Nano Trainer - Half Crew-Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"Black","rp":155.0,"inR":1,"inW":1,"q":25,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-306153.jpg?width=400"},{"sku":"1732002011","t":"Nano Trainer - Half Crew-Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"White","rp":155.0,"inR":1,"inW":1,"q":23,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-695856.jpg?width=400"},{"sku":"1732001021","t":"Nano Trainer - Half Crew-Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"Black","rp":155.0,"inR":1,"inW":1,"q":23,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-306153.jpg?width=400"},{"sku":"1833001021","t":"Nano Active X - Ankle Socks (2 Colours)","r":"Ankle","size":"8-12","col":"Black","rp":145.0,"inR":1,"inW":1,"q":25,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-black-ankle-socks-5-colours-3288776.jpg?width=400"},{"sku":"1833002011","t":"Nano Active X - Ankle Socks (2 Colours)","r":"Ankle","size":"8-12","col":"White","rp":145.0,"inR":1,"inW":1,"q":24,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-white-ankle-socks-5-colours-6476308.jpg?width=400"},{"sku":"1832001021","t":"Nano Active X - Ankle Socks (2 Colours)","r":"Ankle","size":"3-7","col":"Black","rp":145.0,"inR":1,"inW":1,"q":25,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-black-ankle-socks-5-colours-9748131.jpg?width=400"},{"sku":"1832002011","t":"Nano Active X - Ankle Socks (2 Colours)","r":"Ankle","size":"3-7","col":"White","rp":145.0,"inR":1,"inW":1,"q":24,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-white-ankle-socks-5-colours-6476308.jpg?width=400"},{"sku":"1413042151","t":"Digits - Cream Stripes","r":"Toe Socks","size":"8-12","col":"One Colour","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"042","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_Cream_F45.jpg?width=400"},{"sku":"1412042151","t":"Digits - Cream Stripes","r":"Toe Socks","size":"3-7","col":"One Colour","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"042","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_Cream_F45.jpg?width=400"},{"sku":"1433002011","t":"Digits - Toe Socks (2 Colours)","r":"Toe Socks","size":"8-12","col":"White","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_White_F45.jpg?width=400"},{"sku":"1433001021","t":"Digits - Toe Socks (2 Colours)","r":"Toe Socks","size":"8-12","col":"Black","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_Black_F45.jpg?width=400"},{"sku":"1432002011","t":"Digits - Toe Socks (2 Colours)","r":"Toe Socks","size":"3-7","col":"White","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_White_F45.jpg?width=400"},{"sku":"1432001021","t":"Digits - Toe Socks (2 Colours)","r":"Toe Socks","size":"3-7","col":"Black","rp":250.0,"inR":1,"inW":1,"q":24,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Digits_Black_F45.jpg?width=400"},{"sku":"1631002011","t":"Kids - Trainer (2 Colours)","r":"Half-Crew","size":"11-2","col":"White","rp":155.0,"inR":1,"inW":1,"q":186,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-695856.jpg?width=400"},{"sku":"1631001021","t":"Kids - Trainer (2 Colours)","r":"Half-Crew","size":"11-2","col":"Black","rp":155.0,"inR":1,"inW":1,"q":204,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-306153.jpg?width=400"},{"sku":"1251002011","t":"Kids - SA Flag (2 Colours)","r":"Kids","size":"11-2","col":"White","rp":135.0,"inR":1,"inW":1,"q":190,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sa-flag-half-crew-height-socks-397992.jpg?width=400"},{"sku":"1251001021","t":"Kids - SA Flag (2 Colours)","r":"Kids","size":"11-2","col":"Black","rp":135.0,"inR":1,"inW":1,"q":168,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sa-flag-half-crew-height-socks-607453.jpg?width=400"},{"sku":"2228043011","t":"Women's Donn Shorts","r":"Apparel","size":"s","col":"Gilnokie Print","rp":400.0,"inR":1,"inW":0,"q":null,"cc":"043","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-donn-shorts-2280261.jpg?width=400"},{"sku":"2229043011","t":"Women's Donn Shorts","r":"Apparel","size":"m","col":"Gilnokie Print","rp":400.0,"inR":1,"inW":0,"q":null,"cc":"043","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-donn-shorts-2280261.jpg?width=400"},{"sku":"2038001081","t":"Women's Active Tights","r":"Apparel","size":"s","col":"Black","rp":500.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-tights-6402874.jpg?width=400"},{"sku":"2039001081","t":"Women's Active Tights","r":"Apparel","size":"m","col":"Black","rp":500.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-tights-6402874.jpg?width=400"},{"sku":"2028043011","t":"Women's Active Tights","r":"Apparel","size":"s","col":"Gilnokie Print","rp":500.0,"inR":1,"inW":0,"q":null,"cc":"043","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-tights-6402874.jpg?width=400"},{"sku":"2029043011","t":"Women's Active Tights","r":"Apparel","size":"m","col":"Gilnokie Print","rp":500.0,"inR":1,"inW":0,"q":null,"cc":"043","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-tights-6402874.jpg?width=400"},{"sku":"2138001081","t":"Women's Loose Shorts with Tights","r":"Apparel","size":"s","col":"Black","rp":520.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-loose-shorts-with-tights-3681329.jpg?width=400"},{"sku":"2139001081","t":"Women's Loose Shorts with Tights","r":"Apparel","size":"m","col":"Black","rp":520.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-loose-shorts-with-tights-3681329.jpg?width=400"},{"sku":"1938001081","t":"Women's Active Crop (2 Colours)","r":"Apparel","size":"s","col":"Black","rp":420.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-crop-2-colours-4811743.jpg?width=400"},{"sku":"1939001081","t":"Women's Active Crop (2 Colours)","r":"Apparel","size":"m","col":"Black","rp":420.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-crop-2-colours-4811743.jpg?width=400"},{"sku":"1928043011","t":"Women's Active Crop (2 Colours)","r":"Apparel","size":"s","col":"Gilnokie Print","rp":420.0,"inR":1,"inW":0,"q":null,"cc":"043","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-crop-2-colours-2824887.jpg?width=400"},{"sku":"1929043011","t":"Women's Active Crop (2 Colours)","r":"Apparel","size":"m","col":"Gilnokie Print","rp":420.0,"inR":1,"inW":0,"q":null,"cc":"043","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/womens-active-crop-2-colours-2824887.jpg?width=400"},{"sku":"2338001081","t":"Men's Active T-Shirt","r":"Apparel","size":"s","col":"One Colour","rp":350.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/mens-active-t-shirt-8278356.jpg?width=400"},{"sku":"2339001081","t":"Men's Active T-Shirt","r":"Apparel","size":"m","col":"One Colour","rp":350.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/mens-active-t-shirt-8278356.jpg?width=400"},{"sku":"2538001081","t":"Men's Active Shorts","r":"Apparel","size":"s","col":"One Colour","rp":580.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/JRG_0013.jpg?width=400"},{"sku":"2539001081","t":"Men's Active Shorts","r":"Apparel","size":"m","col":"One Colour","rp":580.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/JRG_0013.jpg?width=400"},{"sku":"0433001021","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"8-12","col":"Black","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0433004021","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"8-12","col":"Navy","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0433002011","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"8-12","col":"White","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0433011021","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"8-12","col":"Maroon","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"011","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0432001021","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"3-7","col":"Black","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0432004021","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"3-7","col":"Navy","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0432002011","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"3-7","col":"White","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0432011021","t":"Team - Knee High Sport Sock (4 Colours)","r":"Other","size":"3-7","col":"Maroon","rp":250.0,"inR":1,"inW":0,"q":null,"cc":"011","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/team-knee-high-sport-sock-4-colours-5500244.jpg?width=400"},{"sku":"0323002012","t":"Graffiti - Crew Height Socks","r":"Crew","size":"8-12","col":"One Colour","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/graffiti-crew-height-socks-1452202.jpg?width=400"},{"sku":"0322002012","t":"Graffiti - Crew Height Socks","r":"Crew","size":"3-7","col":"One Colour","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/graffiti-crew-height-socks-1452202.jpg?width=400"},{"sku":"0233002201","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"8-12","col":"Lilac","rp":175.0,"inR":1,"inW":1,"q":65,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-8661454.jpg?width=400"},{"sku":"0232002201","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"3-7","col":"Lilac","rp":175.0,"inR":1,"inW":1,"q":71,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-8661454.jpg?width=400"},{"sku":"0233002091","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"8-12","col":"Orange Fade","rp":175.0,"inR":1,"inW":1,"q":86,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-7089983.jpg?width=400"},{"sku":"0232002091","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"3-7","col":"Orange Fade","rp":175.0,"inR":1,"inW":1,"q":93,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-7089983.jpg?width=400"},{"sku":"0233002121","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"8-12","col":"Pink Fade","rp":175.0,"inR":1,"inW":1,"q":70,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-4743838.jpg?width=400"},{"sku":"0232002121","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"3-7","col":"Pink Fade","rp":175.0,"inR":1,"inW":1,"q":0,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-4743838.jpg?width=400"},{"sku":"0233006021","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"8-12","col":"Green Fade","rp":175.0,"inR":1,"inW":1,"q":64,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/green-fade-cycle-sock-934585.jpg?width=400"},{"sku":"0232002171","t":"Fade Cycle Sock (4 Colours)","r":"Cycle","size":"3-7","col":"Green Fade","rp":175.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/green-fade-cycle-sock-934585.jpg?width=400"},{"sku":"0223002011","t":"Aero Cycle Sock","r":"Cycle","size":"8-12","col":"White","rp":400.0,"inR":1,"inW":1,"q":55,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/aero-cycle-sock-3097876.jpg?width=400"},{"sku":"0222002011","t":"Aero Cycle Sock","r":"Cycle","size":"3-7","col":"White","rp":400.0,"inR":1,"inW":1,"q":50,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/aero-cycle-sock-3097876.jpg?width=400"},{"sku":"0223001021","t":"Aero Cycle Sock","r":"Cycle","size":"8-12","col":"Black","rp":400.0,"inR":1,"inW":1,"q":60,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/aero-cycle-sock-3235124.jpg?width=400"},{"sku":"0222001021","t":"Aero Cycle Sock","r":"Cycle","size":"3-7","col":"Black","rp":400.0,"inR":1,"inW":1,"q":54,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/aero-cycle-sock-3235124.jpg?width=400"},{"sku":"0233008021","t":"Colourway Cycle Sock","r":"Cycle","size":"8-12","col":"HighViz","rp":175.0,"inR":1,"inW":1,"q":51,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-8888537.jpg?width=400"},{"sku":"0232008021","t":"Colourway Cycle Sock","r":"Cycle","size":"3-7","col":"HighViz","rp":175.0,"inR":1,"inW":1,"q":59,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-8888537.jpg?width=400"},{"sku":"0232006021","t":"Colourway Cycle Sock","r":"Cycle","size":"3-7","col":"Pink","rp":175.0,"inR":1,"inW":1,"q":68,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-5798338.jpg?width=400"},{"sku":"0233005021","t":"Colourway Cycle Sock","r":"Cycle","size":"8-12","col":"Royal Blue","rp":175.0,"inR":1,"inW":1,"q":31,"cc":"005","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-9318825.jpg?width=400"},{"sku":"0232005021","t":"Colourway Cycle Sock","r":"Cycle","size":"3-7","col":"Royal Blue","rp":175.0,"inR":1,"inW":1,"q":0,"cc":"005","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/colourway-cycle-sock-9318825.jpg?width=400"},{"sku":"0323017161","t":"Tilt 2.0 - Pinstripe - Crew Height Sock (2 Colours)","r":"Crew","size":"8-12","col":"Mint","rp":165.0,"inR":1,"inW":1,"q":87,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-pinstripe-crew-height-sock-2-colours-5090535.png?width=400"},{"sku":"0323002061","t":"Tilt 2.0 - Pinstripe - Crew Height Sock (2 Colours)","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":1,"q":145,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-pinstripe-crew-height-sock-2-colours-2097295.png?width=400"},{"sku":"0322017161","t":"Tilt 2.0 - Pinstripe - Crew Height Sock (2 Colours)","r":"Crew","size":"3-7","col":"Mint","rp":165.0,"inR":1,"inW":1,"q":86,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-pinstripe-crew-height-sock-2-colours-5090535.png?width=400"},{"sku":"0322002061","t":"Tilt 2.0 - Pinstripe - Crew Height Sock (2 Colours)","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":1,"q":83,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-pinstripe-crew-height-sock-2-colours-2097295.png?width=400"},{"sku":"0323008161","t":"Tilt 2.0 - Geometric - Crew Height Sock (2 Colours)","r":"Crew","size":"8-12","col":"HighViz and Orange","rp":165.0,"inR":1,"inW":1,"q":119,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-geometric-crew-height-sock-2-colours-6042125.png?width=400"},{"sku":"0323005061","t":"Tilt 2.0 - Geometric - Crew Height Sock (2 Colours)","r":"Crew","size":"8-12","col":"Royal and Cerise","rp":165.0,"inR":1,"inW":1,"q":87,"cc":"005","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-geometric-crew-height-sock-2-colours-1921754.png?width=400"},{"sku":"0322008161","t":"Tilt 2.0 - Geometric - Crew Height Sock (2 Colours)","r":"Crew","size":"3-7","col":"HighViz and Orange","rp":165.0,"inR":1,"inW":1,"q":146,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-geometric-crew-height-sock-2-colours-6042125.png?width=400"},{"sku":"0322005061","t":"Tilt 2.0 - Geometric - Crew Height Sock (2 Colours)","r":"Crew","size":"3-7","col":"Royal and Cerise","rp":165.0,"inR":1,"inW":1,"q":91,"cc":"005","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-20-geometric-crew-height-sock-2-colours-1921754.png?width=400"},{"sku":"1333001021","t":"Secret Socks - 3 Pack (2 Colours)","r":"Packs","size":"8-12","col":"Black","rp":210.0,"inR":1,"inW":1,"q":79,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-socks-3-pack-2-colours-5571924.jpg?width=400"},{"sku":"1333002011","t":"Secret Socks - 3 Pack (2 Colours)","r":"Packs","size":"8-12","col":"White","rp":210.0,"inR":1,"inW":1,"q":101,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-socks-3-pack-2-colours-3603111.jpg?width=400"},{"sku":"1332001021","t":"Secret Socks - 3 Pack (2 Colours)","r":"Packs","size":"3-7","col":"Black","rp":210.0,"inR":1,"inW":1,"q":80,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-socks-3-pack-2-colours-5571924.jpg?width=400"},{"sku":"1332002011","t":"Secret Socks - 3 Pack (2 Colours)","r":"Packs","size":"3-7","col":"White","rp":210.0,"inR":1,"inW":1,"q":84,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-socks-3-pack-2-colours-3603111.jpg?width=400"},{"sku":"0323018171","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"8-12","col":"Olive","rp":165.0,"inR":1,"inW":1,"q":81,"cc":"018","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-7585912.jpg?width=400"},{"sku":"0323009091","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"8-12","col":"Orange","rp":165.0,"inR":1,"inW":1,"q":97,"cc":"009","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-5287899.jpg?width=400"},{"sku":"0323034311","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"8-12","col":"Cerise","rp":165.0,"inR":1,"inW":1,"q":43,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-4577745.jpg?width=400"},{"sku":"0323002021","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":1,"q":127,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-7206252.jpg?width=400"},{"sku":"0322018171","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"3-7","col":"Olive","rp":165.0,"inR":1,"inW":1,"q":98,"cc":"018","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-7585912.jpg?width=400"},{"sku":"0322009091","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"3-7","col":"Orange","rp":165.0,"inR":1,"inW":1,"q":117,"cc":"009","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-5287899.jpg?width=400"},{"sku":"0322034311","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"3-7","col":"Cerise","rp":165.0,"inR":1,"inW":1,"q":141,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-4577745.jpg?width=400"},{"sku":"0322002021","t":"Tilt - Crew Height Sock (4 Colours)","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":1,"q":140,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tilt-crew-height-sock-4-colours-7206252.jpg?width=400"},{"sku":"1223015031","t":"Cherry - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Cherry","rp":155.0,"inR":1,"inW":1,"q":67,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/cherry-half-crew-height-socks-9744873.jpg?width=400"},{"sku":"1222015031","t":"Cherry - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Cherry","rp":155.0,"inR":1,"inW":1,"q":64,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/cherry-half-crew-height-socks-9744873.jpg?width=400"},{"sku":"1213018011","t":"Karoo Collection (3 Colours) - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Fynbos Green","rp":155.0,"inR":1,"inW":1,"q":24,"cc":"018","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/karoo-collection-3-colours-half-crew-height-socks-7246846.jpg?width=400"},{"sku":"1213004011","t":"Karoo Collection (3 Colours) - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Tankwa Blue","rp":155.0,"inR":1,"inW":1,"q":43,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/karoo-collection-3-colours-half-crew-height-socks-7371258.jpg?width=400"},{"sku":"1213031191","t":"Karoo Collection (3 Colours) - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Bokkeveld Stone","rp":155.0,"inR":1,"inW":1,"q":17,"cc":"031","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/karoo-collection-3-colours-half-crew-height-socks-6490167.jpg?width=400"},{"sku":"1212018011","t":"Karoo Collection (3 Colours) - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Fynbos Green","rp":155.0,"inR":1,"inW":1,"q":37,"cc":"018","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/karoo-collection-3-colours-half-crew-height-socks-7246846.jpg?width=400"},{"sku":"1212004011","t":"Karoo Collection (3 Colours) - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Tankwa Blue","rp":155.0,"inR":1,"inW":1,"q":94,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/karoo-collection-3-colours-half-crew-height-socks-7371258.jpg?width=400"},{"sku":"1212031191","t":"Karoo Collection (3 Colours) - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Bokkeveld Stone","rp":155.0,"inR":1,"inW":1,"q":59,"cc":"031","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/karoo-collection-3-colours-half-crew-height-socks-6490167.jpg?width=400"},{"sku":"1223026011","t":"Bee - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Sage","rp":155.0,"inR":1,"inW":1,"q":73,"cc":"026","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/bee-half-crew-height-socks-7032760.jpg?width=400"},{"sku":"1222026011","t":"Bee - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Sage","rp":155.0,"inR":1,"inW":1,"q":39,"cc":"026","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/bee-half-crew-height-socks-7032760.jpg?width=400"},{"sku":"1223020131","t":"Purple Tribal - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Purple Tribal","rp":155.0,"inR":1,"inW":1,"q":25,"cc":"020","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/purple-tribal-half-crew-height-socks-4700994.jpg?width=400"},{"sku":"1222020131","t":"Purple Tribal - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Purple Tribal","rp":155.0,"inR":1,"inW":1,"q":19,"cc":"020","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/purple-tribal-half-crew-height-socks-4700994.jpg?width=400"},{"sku":"1138002011","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Small","col":"White","rp":230.0,"inR":1,"inW":1,"q":118,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-3-colours-7965750.jpg?width=400"},{"sku":"1139002011","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Medium","col":"White","rp":230.0,"inR":1,"inW":1,"q":82,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-3-colours-7965750.jpg?width=400"},{"sku":"1138001021","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Small","col":"Black","rp":230.0,"inR":1,"inW":1,"q":47,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-3-colours-8603825.jpg?width=400"},{"sku":"1139001021","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Medium","col":"Black","rp":230.0,"inR":1,"inW":1,"q":56,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-3-colours-8603825.jpg?width=400"},{"sku":"1138008211","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Small","col":"HighViz","rp":230.0,"inR":1,"inW":1,"q":129,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-3-colours-1956268.jpg?width=400"},{"sku":"1139008211","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Medium","col":"HighViz","rp":230.0,"inR":1,"inW":1,"q":222,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-3-colours-1956268.jpg?width=400"},{"sku":"1138014021","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Small","col":"HighViz Pink","rp":230.0,"inR":1,"inW":1,"q":27,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-4-colours-8430943.jpg?width=400"},{"sku":"1139014021","t":"Calf Sleeve (4 Colours)","r":"Sleeves","size":"Medium","col":"HighViz Pink","rp":230.0,"inR":1,"inW":1,"q":33,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/calf-sleeve-4-colours-8430943.jpg?width=400"},{"sku":"0233002011","t":"Plain Cycle Sock (2 Colours)","r":"Cycle","size":"8-12","col":"White","rp":175.0,"inR":1,"inW":1,"q":92,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/white-cycle-sock-281330.jpg?width=400"},{"sku":"0232002011","t":"Plain Cycle Sock (2 Colours)","r":"Cycle","size":"3-7","col":"White","rp":175.0,"inR":1,"inW":1,"q":85,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/white-cycle-sock-281330.jpg?width=400"},{"sku":"0233001021","t":"Plain Cycle Sock (2 Colours)","r":"Cycle","size":"8-12","col":"Black","rp":175.0,"inR":1,"inW":1,"q":66,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/black-cycle-sock-767425.jpg?width=400"},{"sku":"0232001021","t":"Plain Cycle Sock (2 Colours)","r":"Cycle","size":"3-7","col":"Black","rp":175.0,"inR":1,"inW":1,"q":91,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/black-cycle-sock-767425.jpg?width=400"},{"sku":"0213002191","t":"Green Fade Cycle Sock","r":"Cycle","size":"8-12","col":"White","rp":175.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/green-fade-cycle-sock-934585.jpg?width=400"},{"sku":"0212002191","t":"Green Fade Cycle Sock","r":"Cycle","size":"3-7","col":"White","rp":175.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/green-fade-cycle-sock-934585.jpg?width=400"},{"sku":"0223002281","t":"Africa Cycle Sock","r":"Cycle","size":"8-12","col":"White","rp":175.0,"inR":1,"inW":1,"q":62,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/heritage-cycle-sock-874353.jpg?width=400"},{"sku":"0222002281","t":"Africa Cycle Sock","r":"Cycle","size":"3-7","col":"White","rp":175.0,"inR":1,"inW":1,"q":63,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/heritage-cycle-sock-874353.jpg?width=400"},{"sku":"0263001021","t":"Gilnokie Cycle Sock","r":"Cycle","size":"8-12","col":"Black","rp":175.0,"inR":1,"inW":1,"q":48,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/gilnokie-cycle-sock-8248326.jpg?width=400"},{"sku":"0262001021","t":"Gilnokie Cycle Sock","r":"Cycle","size":"3-7","col":"Black","rp":175.0,"inR":1,"inW":1,"q":75,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/gilnokie-cycle-sock-8248326.jpg?width=400"},{"sku":"1253002011","t":"SA Flag - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"White","rp":155.0,"inR":1,"inW":1,"q":174,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sa-flag-half-crew-height-socks-397992.jpg?width=400"},{"sku":"1253001021","t":"SA Flag - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"Black","rp":155.0,"inR":1,"inW":1,"q":155,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sa-flag-half-crew-height-socks-607453.jpg?width=400"},{"sku":"1252002011","t":"SA Flag - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"White","rp":155.0,"inR":1,"inW":1,"q":165,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sa-flag-half-crew-height-socks-397992.jpg?width=400"},{"sku":"1252001021","t":"SA Flag - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"Black","rp":155.0,"inR":1,"inW":1,"q":204,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sa-flag-half-crew-height-socks-607453.jpg?width=400"},{"sku":"0323015031","t":"Strawberries - Crew Height Sock","r":"Crew","size":"8-12","col":"Strawberries","rp":165.0,"inR":1,"inW":1,"q":37,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/strawberries-crew-height-sock-477795.jpg?width=400"},{"sku":"0322015031","t":"Strawberries - Crew Height Sock","r":"Crew","size":"3-7","col":"Strawberries","rp":165.0,"inR":1,"inW":1,"q":26,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/strawberries-crew-height-sock-477795.jpg?width=400"},{"sku":"0833004171","t":"Nano Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"8-12","col":"Navy","rp":145.0,"inR":1,"inW":1,"q":16,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-colourway-low-cut-sock-3-colours-916607.jpg?width=400"},{"sku":"0833006211","t":"Nano Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"8-12","col":"Pink","rp":145.0,"inR":1,"inW":1,"q":16,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-colourway-low-cut-sock-3-colours-791897.jpg?width=400"},{"sku":"0833015301","t":"Nano Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"8-12","col":"Cream","rp":145.0,"inR":1,"inW":1,"q":46,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-colourway-low-cut-sock-3-colours-741674.jpg?width=400"},{"sku":"0832004171","t":"Nano Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"3-7","col":"Navy","rp":145.0,"inR":1,"inW":1,"q":0,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-colourway-low-cut-sock-3-colours-916607.jpg?width=400"},{"sku":"0832006211","t":"Nano Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"3-7","col":"Pink","rp":145.0,"inR":1,"inW":1,"q":10,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-colourway-low-cut-sock-3-colours-791897.jpg?width=400"},{"sku":"0832015301","t":"Nano Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"3-7","col":"Cream","rp":145.0,"inR":1,"inW":1,"q":0,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-colourway-low-cut-sock-3-colours-741674.jpg?width=400"},{"sku":"0833002011","t":"Nano Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"8-12","col":"White","rp":145.0,"inR":1,"inW":1,"q":87,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-low-cut-sock-2-colours-622859.jpg?width=400"},{"sku":"0833001021","t":"Nano Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"8-12","col":"Black","rp":145.0,"inR":1,"inW":1,"q":99,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-low-cut-sock-2-colours-622859.jpg?width=400"},{"sku":"0832002011","t":"Nano Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"3-7","col":"White","rp":145.0,"inR":1,"inW":1,"q":114,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-low-cut-sock-2-colours-622859.jpg?width=400"},{"sku":"0832001021","t":"Nano Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"3-7","col":"Black","rp":145.0,"inR":1,"inW":1,"q":115,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/nano-sprint-low-cut-sock-2-colours-622859.jpg?width=400"},{"sku":"0733022021","t":"Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"8-12","col":"Blue","rp":145.0,"inR":1,"inW":1,"q":134,"cc":"022","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-colourway-low-cut-sock-3-colours-890930.jpg?width=400"},{"sku":"0733016021","t":"Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"8-12","col":"Orange","rp":145.0,"inR":1,"inW":1,"q":90,"cc":"016","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-colourway-low-cut-sock-3-colours-577056.jpg?width=400"},{"sku":"0733020021","t":"Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"8-12","col":"Lilac","rp":145.0,"inR":1,"inW":1,"q":101,"cc":"020","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-colourway-low-cut-sock-3-colours-288334.jpg?width=400"},{"sku":"0732022021","t":"Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"3-7","col":"Blue","rp":145.0,"inR":1,"inW":1,"q":83,"cc":"022","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-colourway-low-cut-sock-3-colours-890930.jpg?width=400"},{"sku":"0732016021","t":"Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"3-7","col":"Orange","rp":145.0,"inR":1,"inW":1,"q":110,"cc":"016","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-colourway-low-cut-sock-3-colours-577056.jpg?width=400"},{"sku":"0732020021","t":"Sprint Colourway - Low Cut Sock (3 Colours)","r":"Low Cut","size":"3-7","col":"Lilac","rp":145.0,"inR":1,"inW":1,"q":87,"cc":"020","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-colourway-low-cut-sock-3-colours-288334.jpg?width=400"},{"sku":"1036002011","t":"Arm Sleeve (2 Colours)","r":"Sleeves","size":"Small","col":"White","rp":200.0,"inR":1,"inW":1,"q":90,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/arm-sleeve-515248.jpg?width=400"},{"sku":"1037002011","t":"Arm Sleeve (2 Colours)","r":"Sleeves","size":"Medium","col":"White","rp":200.0,"inR":1,"inW":1,"q":95,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/arm-sleeve-515248.jpg?width=400"},{"sku":"1036001021","t":"Arm Sleeve (2 Colours)","r":"Sleeves","size":"Small","col":"Black","rp":200.0,"inR":1,"inW":1,"q":143,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/arm-sleeve-502887.jpg?width=400"},{"sku":"1037001021","t":"Arm Sleeve (2 Colours)","r":"Sleeves","size":"Medium","col":"Black","rp":200.0,"inR":1,"inW":1,"q":109,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/arm-sleeve-502887.jpg?width=400"},{"sku":"1223022021","t":"Aztec - Half-Crew Height Socks","r":"Half-Crew","size":"8-12","col":"Aztec","rp":155.0,"inR":1,"inW":1,"q":97,"cc":"022","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/aztec-half-crew-height-socks-978650.jpg?width=400"},{"sku":"1222022021","t":"Aztec - Half-Crew Height Socks","r":"Half-Crew","size":"3-7","col":"Aztec","rp":155.0,"inR":1,"inW":1,"q":124,"cc":"022","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/aztec-half-crew-height-socks-978650.jpg?width=400"},{"sku":"0323022021","t":"Blue Daisies - Crew Height Socks (Padded)","r":"Crew","size":"8-12","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":15,"cc":"022","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/blue-daisies-crew-height-socks-padded-699340.jpg?width=400"},{"sku":"0322022021","t":"Blue Daisies - Crew Height Socks (Padded)","r":"Crew","size":"3-7","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":78,"cc":"022","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/blue-daisies-crew-height-socks-padded-699340.jpg?width=400"},{"sku":"0323007081","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"8-12","col":"Zulu","rp":165.0,"inR":1,"inW":1,"q":93,"cc":"007","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-268055.jpg?width=400"},{"sku":"0323002161","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"8-12","col":"Xhosa","rp":165.0,"inR":1,"inW":1,"q":92,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-780403.jpg?width=400"},{"sku":"0323004161","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"8-12","col":"Sotho","rp":165.0,"inR":1,"inW":1,"q":86,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-115441.jpg?width=400"},{"sku":"0323023071","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"8-12","col":"Venda","rp":165.0,"inR":1,"inW":1,"q":52,"cc":"023","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-634822.jpg?width=400"},{"sku":"0323005021","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"8-12","col":"Ndebele","rp":165.0,"inR":1,"inW":1,"q":26,"cc":"005","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-602127.jpg?width=400"},{"sku":"0322007081","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"3-7","col":"Zulu","rp":165.0,"inR":1,"inW":1,"q":103,"cc":"007","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-521492.jpg?width=400"},{"sku":"0322002161","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"3-7","col":"Xhosa","rp":165.0,"inR":1,"inW":1,"q":120,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-832887.jpg?width=400"},{"sku":"0322004161","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"3-7","col":"Sotho","rp":165.0,"inR":1,"inW":1,"q":122,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-115441.jpg?width=400"},{"sku":"0322023071","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"3-7","col":"Venda","rp":165.0,"inR":1,"inW":1,"q":55,"cc":"023","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-789953.jpg?width=400"},{"sku":"0322005021","t":"South African Heritage Collection - Crew Height Socks","r":"Crew","size":"3-7","col":"Ndebele","rp":165.0,"inR":1,"inW":1,"q":100,"cc":"005","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-heritage-collection-crew-height-socks-674832.jpg?width=400"},{"sku":"0323004071","t":"Tribal - Crew Height Socks","r":"Crew","size":"8-12","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":0,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tribal-crew-height-socks-257308.jpg?width=400"},{"sku":"0322004071","t":"Tribal - Crew Height Socks","r":"Crew","size":"3-7","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":0,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/tribal-crew-height-socks-257308.jpg?width=400"},{"sku":"1375002011","t":"Secret Socks (Box of 36 pairs)","r":"Packs","size":"","col":"Default Title","rp":1242.0,"inR":1,"inW":1,"q":0,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-socks-box-of-36-pairs-921925.jpg?width=400"},{"sku":"0323004151","t":"Leopard - Crew Height Socks","r":"Crew","size":"8-12","col":"Navy & Cream","rp":165.0,"inR":1,"inW":1,"q":19,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-leopard-print-121676.jpg?width=400"},{"sku":"0322004151","t":"Leopard - Crew Height Socks","r":"Crew","size":"3-7","col":"Navy & Cream","rp":165.0,"inR":1,"inW":1,"q":61,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-leopard-print-121676.jpg?width=400"},{"sku":"1333001022","t":"Secret Socks (2 Colours)","r":"Packs","size":"8-12","col":"Black","rp":70.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-sock-2-colours-835120.jpg?width=400"},{"sku":"1333002012","t":"Secret Socks (2 Colours)","r":"Packs","size":"8-12","col":"White","rp":70.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-sock-2-colours-907651.jpg?width=400"},{"sku":"1332001022","t":"Secret Socks (2 Colours)","r":"Packs","size":"3-7","col":"Black","rp":70.0,"inR":1,"inW":0,"q":null,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-sock-2-colours-835120.jpg?width=400"},{"sku":"1332002012","t":"Secret Socks (2 Colours)","r":"Packs","size":"3-7","col":"White","rp":70.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/secret-sock-2-colours-907651.jpg?width=400"},{"sku":"1233016171","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"Orange","rp":155.0,"inR":1,"inW":1,"q":73,"cc":"016","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-201290.jpg?width=400"},{"sku":"1233002011","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"White","rp":155.0,"inR":1,"inW":1,"q":185,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-695856.jpg?width=400"},{"sku":"1233001021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"Black","rp":155.0,"inR":1,"inW":1,"q":197,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-306153.jpg?width=400"},{"sku":"1233014021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"HighViz Pink","rp":155.0,"inR":1,"inW":1,"q":74,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-half-crew-height-socks-9-colours-8006581.jpg?width=400"},{"sku":"1233034021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"Baby Pink","rp":155.0,"inR":1,"inW":1,"q":75,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-half-crew-height-socks-9-colours-7281240.jpg?width=400"},{"sku":"1233003021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"Red","rp":155.0,"inR":1,"inW":1,"q":95,"cc":"003","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-219885.jpg?width=400"},{"sku":"1233008011","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"HighViz Green","rp":155.0,"inR":1,"inW":1,"q":83,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-645696.jpg?width=400"},{"sku":"1233017211","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"Mint","rp":155.0,"inR":1,"inW":1,"q":97,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-415660.jpg?width=400"},{"sku":"1233006021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"8-12","col":"Cerise","rp":155.0,"inR":1,"inW":1,"q":83,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-952667.jpg?width=400"},{"sku":"1232016171","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"Orange","rp":155.0,"inR":1,"inW":1,"q":85,"cc":"016","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-201290.jpg?width=400"},{"sku":"1232002011","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"White","rp":155.0,"inR":1,"inW":1,"q":188,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-695856.jpg?width=400"},{"sku":"1232001021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"Black","rp":155.0,"inR":1,"inW":1,"q":234,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-306153.jpg?width=400"},{"sku":"1232014021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"HighViz Pink","rp":155.0,"inR":1,"inW":1,"q":148,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-half-crew-height-socks-9-colours-8006581.jpg?width=400"},{"sku":"1232034021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"Baby Pink","rp":155.0,"inR":1,"inW":1,"q":86,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-half-crew-height-socks-9-colours-7281240.jpg?width=400"},{"sku":"1232003021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"Red","rp":155.0,"inR":1,"inW":1,"q":97,"cc":"003","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-219885.jpg?width=400"},{"sku":"1232008011","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"HighViz Green","rp":155.0,"inR":1,"inW":1,"q":116,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-645696.jpg?width=400"},{"sku":"1232017211","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"Mint","rp":155.0,"inR":1,"inW":1,"q":111,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-415660.jpg?width=400"},{"sku":"1232006021","t":"Trainer - Half-Crew Height Socks (9 Colours)","r":"Half-Crew","size":"3-7","col":"Cerise","rp":155.0,"inR":1,"inW":1,"q":109,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-7-colours-952667.jpg?width=400"},{"sku":"0733001081","t":"Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"8-12","col":"Black","rp":145.0,"inR":1,"inW":1,"q":159,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-low-cut-sock-2-colours-421718.jpg?width=400"},{"sku":"0733002011","t":"Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"8-12","col":"White","rp":145.0,"inR":1,"inW":1,"q":210,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-low-cut-sock-2-colours-788110.jpg?width=400"},{"sku":"0732001081","t":"Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"3-7","col":"Black","rp":145.0,"inR":1,"inW":1,"q":198,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-low-cut-sock-2-colours-421718.jpg?width=400"},{"sku":"0732002011","t":"Sprint - Low Cut Sock (2 Colours)","r":"Low Cut","size":"3-7","col":"White","rp":145.0,"inR":1,"inW":1,"q":178,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sprint-low-cut-sock-2-colours-788110.jpg?width=400"},{"sku":"0923020201","t":"Purple Flowers - Crew Height Socks (Nano)","r":"Crew","size":"8-12","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":0,"cc":"020","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-purple-flowers-non-padded-397497.jpg?width=400"},{"sku":"0922020201","t":"Purple Flowers - Crew Height Socks (Nano)","r":"Crew","size":"3-7","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":0,"cc":"020","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-purple-flowers-non-padded-397497.jpg?width=400"},{"sku":"0963008011","t":"Gilnokie HighViz - Crew Height Socks (Non-Padded / 2 Colours)","r":"Crew","size":"8-12","col":"HighViz","rp":165.0,"inR":1,"inW":1,"q":28,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-non-padded-2-colours-855633.jpg?width=400"},{"sku":"0963001081","t":"Gilnokie HighViz - Crew Height Socks (Non-Padded / 2 Colours)","r":"Crew","size":"8-12","col":"Black and HighViz","rp":165.0,"inR":1,"inW":1,"q":36,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-non-padded-2-colours-208933.jpg?width=400"},{"sku":"0962008011","t":"Gilnokie HighViz - Crew Height Socks (Non-Padded / 2 Colours)","r":"Crew","size":"3-7","col":"HighViz","rp":165.0,"inR":1,"inW":1,"q":90,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-non-padded-2-colours-855633.jpg?width=400"},{"sku":"0962001081","t":"Gilnokie HighViz - Crew Height Socks (Non-Padded / 2 Colours)","r":"Crew","size":"3-7","col":"Black and HighViz","rp":165.0,"inR":1,"inW":1,"q":124,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-non-padded-2-colours-208933.jpg?width=400"},{"sku":"1213015291","t":"Striped Ribbed Trainer - Half-Crew Height Socks (3 Colours)","r":"Half-Crew","size":"8-12","col":"Cream with Green Stripe","rp":155.0,"inR":1,"inW":1,"q":113,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-with-stripe-4-colours-670010.jpg?width=400"},{"sku":"1213015041","t":"Striped Ribbed Trainer - Half-Crew Height Socks (3 Colours)","r":"Half-Crew","size":"8-12","col":"Cream with Navy Stripe","rp":155.0,"inR":1,"inW":1,"q":73,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-with-stripe-4-colours-977494.jpg?width=400"},{"sku":"1213002061","t":"Striped Ribbed Trainer - Half-Crew Height Socks (3 Colours)","r":"Half-Crew","size":"8-12","col":"White with Pink Stripe","rp":155.0,"inR":1,"inW":1,"q":41,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-with-stripe-4-colours-581646.jpg?width=400"},{"sku":"1212015291","t":"Striped Ribbed Trainer - Half-Crew Height Socks (3 Colours)","r":"Half-Crew","size":"3-7","col":"Cream with Green Stripe","rp":155.0,"inR":1,"inW":1,"q":109,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-with-stripe-4-colours-670010.jpg?width=400"},{"sku":"1212015041","t":"Striped Ribbed Trainer - Half-Crew Height Socks (3 Colours)","r":"Half-Crew","size":"3-7","col":"Cream with Navy Stripe","rp":155.0,"inR":1,"inW":1,"q":89,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-with-stripe-4-colours-977494.jpg?width=400"},{"sku":"1212002061","t":"Striped Ribbed Trainer - Half-Crew Height Socks (3 Colours)","r":"Half-Crew","size":"3-7","col":"White with Pink Stripe","rp":155.0,"inR":1,"inW":1,"q":36,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-with-stripe-4-colours-581646.jpg?width=400"},{"sku":"0313015231","t":"Warm Sunrise - Crew Height Socks","r":"Crew","size":"8-12","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":0,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-cream-sunrise-939957.jpg?width=400"},{"sku":"0312015231","t":"Warm Sunrise - Crew Height Socks","r":"Crew","size":"3-7","col":"One Colour","rp":165.0,"inR":1,"inW":1,"q":14,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-cream-sunrise-939957.jpg?width=400"},{"sku":"0533034021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Baby Pink","rp":145.0,"inR":1,"inW":1,"q":62,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-9-colours-5342054.png?width=400"},{"sku":"0533014021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"HighViz Pink","rp":145.0,"inR":1,"inW":1,"q":90,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-9-colours-2566962.jpg?width=400"},{"sku":"0533017211","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Mint and Charcoal","rp":145.0,"inR":1,"inW":1,"q":52,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ActiveX_Mint_F45.jpg?width=400"},{"sku":"0533006021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Cerise","rp":145.0,"inR":1,"inW":1,"q":70,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-5-colours-525657.jpg?width=400"},{"sku":"0533003021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Red","rp":145.0,"inR":1,"inW":1,"q":85,"cc":"003","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ActiveX_Red_F45.jpg?width=400"},{"sku":"0533004021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Navy","rp":145.0,"inR":1,"inW":1,"q":138,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ActiveX_Navy_F45.jpg?width=400"},{"sku":"0532034021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Baby Pink","rp":145.0,"inR":1,"inW":1,"q":101,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-9-colours-5342054.png?width=400"},{"sku":"0532014021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"HighViz Pink","rp":145.0,"inR":1,"inW":1,"q":69,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-9-colours-2566962.jpg?width=400"},{"sku":"0532017211","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Mint and Charcoal","rp":145.0,"inR":1,"inW":1,"q":89,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ActiveX_Mint_F45.jpg?width=400"},{"sku":"0532006021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Cerise","rp":145.0,"inR":1,"inW":1,"q":109,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-5-colours-525657.jpg?width=400"},{"sku":"0532003021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Red","rp":145.0,"inR":1,"inW":1,"q":167,"cc":"003","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ActiveX_Red_F45.jpg?width=400"},{"sku":"0532004021","t":"Active X Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Navy","rp":145.0,"inR":1,"inW":1,"q":154,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ActiveX_Navy_F45.jpg?width=400"},{"sku":"S-W-B-3232","t":"ShotBru! - Crew Height Socks","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"B-3","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-shotbru-812282.jpg?width=400"},{"sku":"S-W-B-3231","t":"ShotBru! - Crew Height Socks","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"B-3","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-shotbru-812282.jpg?width=400"},{"sku":"0363008011","t":"Gilnokie HighViz - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"HighViz","rp":165.0,"inR":1,"inW":1,"q":37,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-2-colours-605432.jpg?width=400"},{"sku":"0363001081","t":"Gilnokie HighViz - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"Black and HighViz","rp":165.0,"inR":1,"inW":1,"q":69,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-2-colours-721278.jpg?width=400"},{"sku":"0362008011","t":"Gilnokie HighViz - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"HighViz","rp":165.0,"inR":1,"inW":1,"q":51,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-2-colours-605432.jpg?width=400"},{"sku":"0362001081","t":"Gilnokie HighViz - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"Black and HighViz","rp":165.0,"inR":1,"inW":1,"q":61,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-highviz-2-colours-721278.jpg?width=400"},{"sku":"0533002011","t":"Active X White Ankle Socks","r":"Ankle","size":"8-12","col":"White","rp":145.0,"inR":1,"inW":1,"q":156,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-white-ankle-socks-5-colours-6476308.jpg?width=400"},{"sku":"0532002011","t":"Active X White Ankle Socks","r":"Ankle","size":"3-7","col":"White","rp":145.0,"inR":1,"inW":1,"q":161,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-white-ankle-socks-5-colours-6476308.jpg?width=400"},{"sku":"0533001021","t":"Active X Black Ankle Socks (2 Colours)","r":"Ankle","size":"8-12","col":"Black","rp":145.0,"inR":1,"inW":1,"q":144,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-black-ankle-socks-5-colours-3288776.jpg?width=400"},{"sku":"0533001191","t":"Active X Black Ankle Socks (2 Colours)","r":"Ankle","size":"8-12","col":"Airforce","rp":145.0,"inR":1,"inW":1,"q":0,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-black-5-colours-816644.jpg?width=400"},{"sku":"0532001021","t":"Active X Black Ankle Socks (2 Colours)","r":"Ankle","size":"3-7","col":"Black","rp":145.0,"inR":1,"inW":1,"q":135,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-black-ankle-socks-5-colours-9748131.jpg?width=400"},{"sku":"0532001191","t":"Active X Black Ankle Socks (2 Colours)","r":"Ankle","size":"3-7","col":"Airforce","rp":145.0,"inR":1,"inW":1,"q":208,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-black-5-colours-816644.jpg?width=400"},{"sku":"0533027021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Orange White Melange","rp":145.0,"inR":1,"inW":1,"q":82,"cc":"027","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-3-colours-1765810.jpg?width=400"},{"sku":"0533036021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Lilac Melange","rp":145.0,"inR":1,"inW":1,"q":55,"cc":"036","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-9-colours-6528860.jpg?width=400"},{"sku":"0533035021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"HighViz Melange","rp":145.0,"inR":1,"inW":1,"q":97,"cc":"035","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-5-colours-3873171.png?width=400"},{"sku":"0533024021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Turquoise White Melange","rp":145.0,"inR":1,"inW":1,"q":110,"cc":"024","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-5-colours-5021883.jpg?width=400"},{"sku":"0533025011","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Turquoise Black Melange","rp":145.0,"inR":1,"inW":1,"q":94,"cc":"025","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-3-colours-5711637.jpg?width=400"},{"sku":"0532027021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Orange White Melange","rp":145.0,"inR":1,"inW":1,"q":68,"cc":"027","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-3-colours-1765810.jpg?width=400"},{"sku":"0532036021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Lilac Melange","rp":145.0,"inR":1,"inW":1,"q":83,"cc":"036","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-ankle-socks-9-colours-6528860.jpg?width=400"},{"sku":"0532035021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"HighViz Melange","rp":145.0,"inR":1,"inW":1,"q":126,"cc":"035","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-5-colours-3873171.png?width=400"},{"sku":"0532024021","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Turquoise White Melange","rp":145.0,"inR":1,"inW":1,"q":73,"cc":"024","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-5-colours-5021883.jpg?width=400"},{"sku":"0532025011","t":"Active X Melange Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Turquoise Black Melange","rp":145.0,"inR":1,"inW":1,"q":150,"cc":"025","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-melange-ankle-socks-3-colours-5711637.jpg?width=400"},{"sku":"0963001021","t":"Gilnokie - Crew Height Socks (Nano / 2 Colours)","r":"Crew","size":"8-12","col":"Black","rp":165.0,"inR":1,"inW":1,"q":22,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-non-padded-4-colours-460283.jpg?width=400"},{"sku":"0962001021","t":"Gilnokie - Crew Height Socks (Nano / 2 Colours)","r":"Crew","size":"3-7","col":"Black","rp":165.0,"inR":1,"inW":1,"q":60,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-non-padded-4-colours-460283.jpg?width=400"},{"sku":"S-B-W-3212","t":"Macky Movement - Crew Height Socks - Official Sock","r":"Crew","size":"8-12","col":"Black","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"W-3","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/macky-movement-official-sock-184217.jpg?width=400"},{"sku":"S-W-B-3212","t":"Macky Movement - Crew Height Socks - Official Sock","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"B-3","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/macky-movement-official-sock-180387.jpg?width=400"},{"sku":"S-B-W-3211","t":"Macky Movement - Crew Height Socks - Official Sock","r":"Crew","size":"3-7","col":"Black","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"W-3","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/macky-movement-official-sock-184217.jpg?width=400"},{"sku":"S-W-B-3211","t":"Macky Movement - Crew Height Socks - Official Sock","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"B-3","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/macky-movement-official-sock-180387.jpg?width=400"},{"sku":"0363001021","t":"Gilnokie - Crew Height Socks (3 Colours)","r":"Crew","size":"8-12","col":"Black","rp":165.0,"inR":1,"inW":1,"q":124,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-4-colours-528194.jpg?width=400"},{"sku":"0363002011","t":"Gilnokie - Crew Height Socks (3 Colours)","r":"Crew","size":"8-12","col":"White & Black","rp":165.0,"inR":1,"inW":1,"q":130,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/gilnokie-crew-height-socks-4-colours-223532.jpg?width=400"},{"sku":"0363003021","t":"Gilnokie - Crew Height Socks (3 Colours)","r":"Crew","size":"8-12","col":"Red","rp":165.0,"inR":1,"inW":1,"q":74,"cc":"003","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/gilnokie-crew-height-socks-3-colours-9069817.jpg?width=400"},{"sku":"0362001021","t":"Gilnokie - Crew Height Socks (3 Colours)","r":"Crew","size":"3-7","col":"Black","rp":165.0,"inR":1,"inW":1,"q":192,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-gilnokie-4-colours-528194.jpg?width=400"},{"sku":"0362002011","t":"Gilnokie - Crew Height Socks (3 Colours)","r":"Crew","size":"3-7","col":"White & Black","rp":165.0,"inR":1,"inW":1,"q":231,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/gilnokie-crew-height-socks-4-colours-223532.jpg?width=400"},{"sku":"0362003021","t":"Gilnokie - Crew Height Socks (3 Colours)","r":"Crew","size":"3-7","col":"Red","rp":165.0,"inR":1,"inW":1,"q":107,"cc":"003","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/gilnokie-crew-height-socks-3-colours-9069817.jpg?width=400"},{"sku":"0133001021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"Black","rp":250.0,"inR":1,"inW":1,"q":75,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_Black_F45.jpg?width=400"},{"sku":"0133002011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"White","rp":250.0,"inR":1,"inW":1,"q":36,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_White_F45.jpg?width=400"},{"sku":"0133008211","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"HighViz Green","rp":250.0,"inR":1,"inW":1,"q":65,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/energiser-compression-socks-6-colours-7056029.jpg?width=400"},{"sku":"0133006021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"Cerise","rp":250.0,"inR":1,"inW":1,"q":21,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_Cerise_F45.jpg?width=400"},{"sku":"0133014021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"HighViz Pink","rp":250.0,"inR":1,"inW":1,"q":64,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/energiser-compression-socks-6-colours-9399368.jpg?width=400"},{"sku":"0133004021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"Navy","rp":250.0,"inR":1,"inW":1,"q":34,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/energiser-compression-socks-6-colours-2613062.jpg?width=400"},{"sku":"0132001021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"Black","rp":250.0,"inR":1,"inW":1,"q":108,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_Black_F45.jpg?width=400"},{"sku":"0132002011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"White","rp":250.0,"inR":1,"inW":1,"q":39,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_White_F45.jpg?width=400"},{"sku":"0132008211","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"HighViz Green","rp":250.0,"inR":1,"inW":1,"q":93,"cc":"008","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/energiser-compression-socks-6-colours-7056029.jpg?width=400"},{"sku":"0132006021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"Cerise","rp":250.0,"inR":1,"inW":1,"q":88,"cc":"006","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_Cerise_F45.jpg?width=400"},{"sku":"0132014021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"HighViz Pink","rp":250.0,"inR":1,"inW":1,"q":41,"cc":"014","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/energiser-compression-socks-6-colours-9399368.jpg?width=400"},{"sku":"0132004021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"Navy","rp":250.0,"inR":1,"inW":1,"q":71,"cc":"004","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/energiser-compression-socks-6-colours-2613062.jpg?width=400"},{"sku":"0134001021","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"13-16","col":"Black","rp":250.0,"inR":1,"inW":1,"q":49,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/Energiser_Black_F45.jpg?width=400"},{"sku":"0343002011","t":"Ribbed Sock - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":1,"q":89,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-ribbed-sock-2-colours-649709.jpg?width=400"},{"sku":"0343001021","t":"Ribbed Sock - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"Black","rp":165.0,"inR":1,"inW":1,"q":151,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-ribbed-sock-2-colours-390061.jpg?width=400"},{"sku":"0342002011","t":"Ribbed Sock - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":1,"q":100,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-ribbed-sock-2-colours-649709.jpg?width=400"},{"sku":"0342001021","t":"Ribbed Sock - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"Black","rp":165.0,"inR":1,"inW":1,"q":167,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-ribbed-sock-2-colours-390061.jpg?width=400"},{"sku":"0344002011","t":"Ribbed Sock - Crew Height Socks (2 Colours)","r":"Crew","size":"13-16","col":"White","rp":165.0,"inR":1,"inW":1,"q":26,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-ribbed-sock-2-colours-649709.jpg?width=400"},{"sku":"0344001021","t":"Ribbed Sock - Crew Height Socks (2 Colours)","r":"Crew","size":"13-16","col":"Black","rp":165.0,"inR":1,"inW":1,"q":29,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-ribbed-sock-2-colours-390061.jpg?width=400"},{"sku":"T-B-NI-262","t":"Beloved Long Runs - Half-Crew Height Socks (5 Colours)","r":"Half-Crew","size":"8-12","col":"Black","rp":155.0,"inR":1,"inW":0,"q":null,"cc":"NI-","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-beloved-long-runs-7-colours-181149.jpg?width=400"},{"sku":"T-B-NI-261","t":"Beloved Long Runs - Half-Crew Height Socks (5 Colours)","r":"Half-Crew","size":"3-7","col":"Black","rp":155.0,"inR":1,"inW":0,"q":null,"cc":"NI-","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-beloved-long-runs-7-colours-181149.jpg?width=400"},{"sku":"0633001081","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Black and HighViz","rp":145.0,"inR":1,"inW":1,"q":48,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-6-colours-646557.jpg?width=400"},{"sku":"0633002081","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"White and HighViz","rp":145.0,"inR":1,"inW":1,"q":111,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-6-colours-771307.jpg?width=400"},{"sku":"0633017261","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Mint and Sage","rp":145.0,"inR":1,"inW":1,"q":46,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-ankle-socks-7-colours-6443600.jpg?width=400"},{"sku":"0633015021","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"White and Cream","rp":145.0,"inR":1,"inW":1,"q":72,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-ankle-socks-7-colours-2963761.jpg?width=400"},{"sku":"0633034021","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"8-12","col":"Baby Pink","rp":145.0,"inR":1,"inW":0,"q":null,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-ankle-socks-5-colours-7704767.jpg?width=400"},{"sku":"0632001081","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Black and HighViz","rp":145.0,"inR":1,"inW":1,"q":78,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-6-colours-646557.jpg?width=400"},{"sku":"0632002081","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"White and HighViz","rp":145.0,"inR":1,"inW":1,"q":104,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-6-colours-771307.jpg?width=400"},{"sku":"0632017261","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Mint and Sage","rp":145.0,"inR":1,"inW":1,"q":47,"cc":"017","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-ankle-socks-7-colours-6443600.jpg?width=400"},{"sku":"0632015021","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"White and Cream","rp":145.0,"inR":1,"inW":1,"q":69,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-ankle-socks-7-colours-2963761.jpg?width=400"},{"sku":"0632034061","t":"Active X Double Welt Ankle Socks (5 Colours)","r":"Ankle","size":"3-7","col":"Baby Pink","rp":145.0,"inR":1,"inW":0,"q":null,"cc":"034","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/active-x-double-welt-ankle-socks-5-colours-7704767.jpg?width=400"},{"sku":"0353001021","t":"South African Flag - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"Black","rp":165.0,"inR":1,"inW":1,"q":191,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-sa-flag-4-colours-400547.jpg?width=400"},{"sku":"0353002011","t":"South African Flag - Crew Height Socks (2 Colours)","r":"Crew","size":"8-12","col":"White","rp":165.0,"inR":1,"inW":1,"q":154,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-flag-crew-height-socks-3-colours-9446407.jpg?width=400"},{"sku":"0352001021","t":"South African Flag - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"Black","rp":165.0,"inR":1,"inW":1,"q":269,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-sa-flag-4-colours-400547.jpg?width=400"},{"sku":"0352002011","t":"South African Flag - Crew Height Socks (2 Colours)","r":"Crew","size":"3-7","col":"White","rp":165.0,"inR":1,"inW":1,"q":155,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/south-african-flag-crew-height-socks-3-colours-9446407.jpg?width=400"},{"sku":"0323002011","t":"De Stijl in White - Crew Height Socks","r":"Crew","size":"8-12","col":"One Colour","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-white-de-stijl-298922.jpg?width=400"},{"sku":"0322002011","t":"De Stijl in White - Crew Height Socks","r":"Crew","size":"3-7","col":"One Colour","rp":165.0,"inR":1,"inW":0,"q":null,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/sports-white-de-stijl-298922.jpg?width=400"},{"sku":"1243025011","t":"Trainer Melange - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"Turquoise and Black Melange","rp":155.0,"inR":1,"inW":1,"q":59,"cc":"025","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-melange-half-crew-height-socks-2-colours-5347508.jpg?width=400"},{"sku":"1243024021","t":"Trainer Melange - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"Turquoise and White Melange","rp":155.0,"inR":1,"inW":1,"q":62,"cc":"024","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-melange-4-colours-438659.jpg?width=400"},{"sku":"1242025011","t":"Trainer Melange - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"Turquoise and Black Melange","rp":155.0,"inR":1,"inW":1,"q":80,"cc":"025","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-melange-half-crew-height-socks-2-colours-5347508.jpg?width=400"},{"sku":"1242024021","t":"Trainer Melange - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"Turquoise and White Melange","rp":155.0,"inR":1,"inW":1,"q":79,"cc":"024","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/trainer-melange-4-colours-438659.jpg?width=400"},{"sku":"1243002011","t":"Ribbed Trainers - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"White","rp":155.0,"inR":1,"inW":1,"q":132,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ribbed-trainers-half-crew-height-socks-4-colours-6785997.jpg?width=400"},{"sku":"1243001021","t":"Ribbed Trainers - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"8-12","col":"Black","rp":155.0,"inR":1,"inW":1,"q":184,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ribbed-trainers-half-crew-height-socks-4-colours-5095891.jpg?width=400"},{"sku":"1242002011","t":"Ribbed Trainers - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"White","rp":155.0,"inR":1,"inW":1,"q":155,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ribbed-trainers-half-crew-height-socks-4-colours-6785997.jpg?width=400"},{"sku":"1242001021","t":"Ribbed Trainers - Half-Crew Height Socks (2 Colours)","r":"Half-Crew","size":"3-7","col":"Black","rp":155.0,"inR":1,"inW":1,"q":203,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0710/4633/2695/files/ribbed-trainers-half-crew-height-socks-4-colours-5095891.jpg?width=400"},{"sku":"0133038011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"Baby Blue","rp":250.0,"inR":0,"inW":1,"q":31,"cc":"038","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/Energiser_BabyBlue_F45.jpg?width=400"},{"sku":"0133041011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"8-12","col":"Burgundy","rp":250.0,"inR":0,"inW":1,"q":33,"cc":"041","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/energiser-compression-socks-8-colours-7337335.jpg?width=400"},{"sku":"0132038011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"Baby Blue","rp":250.0,"inR":0,"inW":1,"q":29,"cc":"038","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/Energiser_BabyBlue_F45.jpg?width=400"},{"sku":"0132041011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"3-7","col":"Burgundy","rp":250.0,"inR":0,"inW":1,"q":32,"cc":"041","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/energiser-compression-socks-8-colours-7337335.jpg?width=400"},{"sku":"0134002011","t":"Energiser - Compression Socks (8 Colours)","r":"Compression","size":"13-16","col":"White","rp":250.0,"inR":0,"inW":1,"q":30,"cc":"002","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/Energiser_White_F45.jpg?width=400"},{"sku":"1621015391","t":"Kids Christmas Trainer - Half-Crew Height","r":"Half-Crew","size":"11-2","col":"White","rp":155.0,"inR":0,"inW":1,"q":50,"cc":"015","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/Trainer_HoHo_F45.jpg?width=400"},{"sku":"0633021061","t":"Active X Double Welt Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Grey and Pink","rp":145.0,"inR":0,"inW":1,"q":0,"cc":"021","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/active-x-double-welt-6-colours-848350_5763521e-92a7-49b8-a9b9-517ad83fc612.jpg?width=400"},{"sku":"0633001161","t":"Active X Double Welt Ankle Socks (6 Colours)","r":"Ankle","size":"8-12","col":"Orange and Black","rp":145.0,"inR":0,"inW":1,"q":0,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/active-x-double-welt-6-colours-479453.jpg?width=400"},{"sku":"0632021061","t":"Active X Double Welt Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Grey and Pink","rp":145.0,"inR":0,"inW":1,"q":0,"cc":"021","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/active-x-double-welt-6-colours-848350_5763521e-92a7-49b8-a9b9-517ad83fc612.jpg?width=400"},{"sku":"0632001161","t":"Active X Double Welt Ankle Socks (6 Colours)","r":"Ankle","size":"3-7","col":"Orange and Black","rp":145.0,"inR":0,"inW":1,"q":0,"cc":"001","img":"https://cdn.shopify.com/s/files/1/0730/5396/2396/files/active-x-double-welt-6-colours-479453.jpg?width=400"}];
-
+<script>/* ===== shared helpers (colours, placeholder yarn recipes) ===== */
 let seed = 20261106;
 const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
 const pick = a => a[Math.floor(rnd() * a.length)];
@@ -186,81 +222,11 @@ function recipe(p) {
   ];
 }
 
-/* ---- sample orders ---- */
-const PROV = [["KwaZulu-Natal",34,["Durban","Pinetown","Umhlanga","Ballito","Pietermaritzburg","Hillcrest"]],["Gauteng",30,["Johannesburg","Pretoria","Sandton","Centurion","Midrand"]],["Western Cape",20,["Cape Town","Stellenbosch","Somerset West","Paarl"]],["Eastern Cape",6,["Gqeberha","East London"]],["Free State",3,["Bloemfontein"]],["Mpumalanga",3,["Mbombela","eMalahleni"]],["Limpopo",2,["Polokwane"]],["North West",2,["Rustenburg"]]];
-const FIRST = ["Thabo","Sipho","Lerato","Ayanda","Megan","Jason","Nadia","Ruan","Kyle","Zanele","Priya","Liam","Chloe","Musa","Anika","Tumi","Grant","Sarah","Kevin","Nomsa","Pieter","Leah","Dylan","Jess"];
-const LAST = ["Naidoo","Mokoena","van der Merwe","Smith","Dlamini","Botha","Pillay","Nkosi","Jacobs","Khumalo","Pretorius","Govender","Ndlovu","Coetzee","Mthembu","Steyn"];
-const WH = [["Coastline Run Co.","KwaZulu-Natal","Umhlanga"],["Highveld Cycle Hub","Gauteng","Johannesburg"],["Peak Trail Outfitters","Western Cape","Stellenbosch"],["Midlands Multisport","KwaZulu-Natal","Pietermaritzburg"],["Bayside Padel Club","Eastern Cape","Gqeberha"],["Capital Runners","Gauteng","Pretoria"],["Ridge Sports Store","Mpumalanga","Mbombela"],["Southern Tri Shop","Western Cape","Cape Town"],["Golden Mile Sport","KwaZulu-Natal","Durban"],["Rooibos Running Club","Western Cape","Paarl"],["Lowveld Endurance","Limpopo","Polokwane"],["Free State Fitness","Free State","Bloemfontein"]];
-const POS_LOCS = [["POS Store", 50, ["Lindiwe", "Sbu"]], ["POS Cape Town", 25, ["Megan", "Ruan"]], ["POS Events", 25, ["Event team 1", "Event team 2"]]];
-const CHANNELS = ["Online store", ...POS_LOCS.map(p => p[0]), "Wholesale"];
-const CODES = [null,null,null,null,null,null,"WELCOME10","BUY3GET2","VIPACCESS","CALVIE10"];
-
-const sellable = CATALOG.filter(p => p.r !== "Packs" && p.r !== "Other");
-const rWeights = sellable.map(p => (p.r === "Compression" ? 9 : p.r === "Crew" ? 3 : p.r === "Half-Crew" ? 3 : 1.5) * (p.size === "8-12" ? 1.3 : 1));
-const wSell = sellable.filter(p => p.inW);
-const wWeights = wSell.map(p => p.r === "Compression" ? 6 : 2);
-
-const START = new Date("2026-08-01T00:00:00+02:00"), NOW = new Date("2026-11-06T16:00:00+02:00");
-const ORDERS = [];
-let num = 18240, wnum = 2410;
-for (let d = new Date(START); d <= NOW; d = new Date(d.getTime() + 864e5)) {
-  const t = (d - START) / (NOW - START);
-  const nRetail = Math.round(10 + t * 10 + rnd() * 7 + (d.getDay() === 0 || d.getDay() === 1 ? 4 : 0));
-  for (let i = 0; i < nRetail; i++) {
-    const at = new Date(d.getTime() + (6 + rnd() * 17) * 36e5); if (at > NOW) continue;
-    const [prov, , cities] = wpick(PROV, PROV.map(p => p[1]));
-    const lines = []; const nl = wpick([1,2,3,4],[50,28,14,8]);
-    for (let j = 0; j < nl; j++) { const p = wpick(sellable, rWeights); lines.push({ sku:p.sku, qty: rnd() < .15 ? 2 : 1, price:p.rp }); }
-    const code = pick(CODES), sub = lines.reduce((s,l) => s + l.qty*l.price, 0), disc = code ? Math.round(sub*.1) : 0;
-    const isPos = rnd() < 0.25, posLoc = isPos ? wpick(POS_LOCS, POS_LOCS.map(p => p[1])) : null;
-    ORDERS.push({ id:"#"+(++num), ch:"retail", src: isPos ? "pos" : "online", loc: isPos ? posLoc[0] : "Online store", staff: isPos ? pick(posLoc[2]) : null, at, customer:`${pick(FIRST)} ${pick(LAST)}`, company:null, prov, city:pick(cities), code, lines, sub, disc, ship: sub - disc >= 500 ? 0 : 129, refunded: rnd() < .02 });
-  }
-  if (rnd() < 0.35) {
-    const [company, prov, city] = pick(WH), lines = [], nl = 4 + Math.floor(rnd()*6);
-    for (let j = 0; j < nl; j++) { const p = wpick(wSell, wWeights); lines.push({ sku:p.sku, qty: 6*(1+Math.floor(rnd()*3)), price: Math.round(p.rp*.6) }); }
-    const sub = lines.reduce((s,l) => s + l.qty*l.price, 0);
-    ORDERS.push({ id:"W"+(++wnum), ch:"wholesale", src:"draft", loc:"Wholesale", staff:null, at:new Date(d.getTime() + (8 + rnd()*9)*36e5), customer:company, company, prov, city, code:null, lines, sub, disc:0, ship:0, refunded:false });
-  }
-}
-ORDERS.forEach(o => { if (o.src === "pos") { o.ship = 0; o.customer = rnd() < .6 ? "Walk-in customer" : o.customer; if (o.loc === "POS Store") { o.prov = "KwaZulu-Natal"; o.city = "Pinetown"; } if (o.loc === "POS Cape Town") { o.prov = "Western Cape"; o.city = "Cape Town"; } } });
-ORDERS.forEach(o => { o.total = o.sub - o.disc + o.ship; o.pairs = o.lines.reduce((s,l) => s + l.qty, 0); o.status = o.refunded ? "Refunded" : (NOW - o.at < 2*864e5 ? "Unfulfilled" : "Fulfilled"); });
-ORDERS.sort((a,b) => b.at - a.at);
-const BY_SKU = Object.fromEntries(CATALOG.map(p => [p.sku, p]));
-
-/* ---- yarn stock + production (samples) ---- */
-const YARN = {};
-sellable.forEach(p => (recipe(p) || []).forEach(r => { YARN[r.yarn] ??= { yarn:r.yarn, type:r.yarn.split(" ")[0], colour:r.yarn.split(" ").slice(1).join(" "), used30:0 }; }));
-const d30 = new Date(NOW - 30*864e5);
-ORDERS.filter(o => o.at >= d30).forEach(o => o.lines.forEach(l => (recipe(BY_SKU[l.sku]) || []).forEach(r => YARN[r.yarn].used30 += r.g * l.qty / 1000)));
-Object.values(YARN).forEach(y => {
-  y.used30 = +y.used30.toFixed(2);
-  y.cone = y.type === "Elastane" ? 1 : 2;
-  y.lead = y.type === "Polyester" ? 21 : 28;
-  y.stock = +(y.used30 * (0.3 + rnd()*2.2) + rnd()*4).toFixed(1);
-  y.daily = y.used30 / 30;
-  y.cover = y.daily ? Math.floor(y.stock / y.daily) : 999;
-  y.reorderKg = Math.max(0, Math.ceil(((y.daily * (y.lead + 30)) - y.stock) / y.cone) * y.cone);
-  y.state = y.cover < y.lead ? "bad" : y.cover < y.lead + 14 ? "warn" : "good";
-});
-const RUNS = [];
-for (let i = 0; i < 14; i++) {
-  const p = wpick(wSell, wWeights), qty = 60 * (2 + Math.floor(rnd()*8)), at = new Date(NOW - i*1.6*864e5 - rnd()*864e5);
-  RUNS.push({ id:"PR-" + (1460 - i), at, sku:p.sku, qty, machine:"Machine " + (1 + Math.floor(rnd()*6)), status: i < 2 ? "In progress" : "Complete" });
-}
-
-/* ---- stock: wholesale store holds the count, retail sales since go-live are subtracted here ---- */
-const GO_LIVE = new Date("2026-11-01T00:00:00+02:00");
-const STOCK = {};
-const soldSince = (sku, from, ch) => ORDERS.filter(o => !o.refunded && o.at >= from && (!ch || o.ch === ch)).reduce((s, o) => s + o.lines.filter(l => l.sku === sku).reduce((t, l) => t + l.qty, 0), 0);
-CATALOG.forEach(p => {
-  const s30 = soldSince(p.sku, new Date(NOW - 30 * 864e5)), s7 = soldSince(p.sku, new Date(NOW - 7 * 864e5)), daily = s30 / 30;
-  const counted = new Date(NOW - (2 + Math.floor(rnd() * 18)) * 864e5);
-  const retailSince = p.inW ? soldSince(p.sku, counted, "retail") : 0;
-  const avail = daily ? Math.max(0, Math.round(daily * (rnd() < .12 ? rnd() * 6 : 10 + rnd() * 50) + (rnd() < .3 ? rnd() * 40 : 0))) : Math.round(rnd() < .1 ? 0 : 6 + rnd() * 70);
-  const shopify = avail + retailSince;
-  const cover = daily ? Math.floor(avail / daily) : (avail ? 999 : 0);
-  STOCK[p.sku] = { shopify, retailSince, counted, avail, s7, s30, daily, cover, tracked: !!p.inW, state: !p.inW ? "na" : avail === 0 ? "out" : cover < 14 ? "low" : "ok" };
-});
+const CH_COL = {};
+const CH_PALETTE = ["#E0E123","#A3A40C","#6E6F00","#C9CA6B","#8C8D2A","#D9DA8F","#5A5B10"];
+const chCol = c => CH_COL[c] || (CH_COL[c] = c === "Wholesale" ? "#111111" : CH_PALETTE[Object.keys(CH_COL).filter(k => k !== "Wholesale").length % CH_PALETTE.length]);
+const locName = id => ((typeof ALL_LOCS !== "undefined" && ALL_LOCS.length ? ALL_LOCS : LOCS).find(l => String(l.id) === String(id)) || {}).name || "All locations";
+const dayOf = d => new Date(d).toLocaleDateString("en-CA", { timeZone: "Africa/Johannesburg" });
 
 /* ===== CORE: formatting, dates, filters, routing ===== */
 const $ = (s, el = document) => el.querySelector(s);
@@ -357,13 +323,14 @@ function rangeLabel() { const [a, b] = rangeFor(S.preset); return `${dShort(a)} 
 
 /* ---- routing ---- */
 const VIEWS = {};
-const TITLES = { dashboard: "Dashboard", sales: "Sales reports", orders: "Orders", products: "Stock", yarn: "Yarn & production", wholesale: "Wholesale accounts", system: "System" };
+const TITLES = { dashboard: "Dashboard", sales: "Sales reports", orders: "Orders", products: "Stock", transfers: "Transfers", events: "Events", yarn: "Yarn & production", wholesale: "Wholesale accounts", system: "System" };
 function route() {
   const v = (location.hash || "#dashboard").slice(1); const name = VIEWS[v] ? v : "dashboard";
   document.querySelectorAll(".nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + name));
   $("#title").textContent = TITLES[name];
   $("#ctl").innerHTML = ["dashboard", "sales", "orders", "wholesale"].includes(name) ? controls(name) : "";
   charts.forEach(c => c.destroy()); charts = [];
+  $("#drawer").classList.remove("on");
   $("#view").innerHTML = VIEWS[name]();
   (VIEWS[name].after || (() => {}))();
 }
@@ -397,11 +364,211 @@ document.addEventListener("input", e => {
 document.addEventListener("keydown", e => { if (e.key === "Escape") $("#drawer").classList.remove("on"); });
 window.addEventListener("hashchange", route);
 
+/* ===== LIVE DATA LAYER: Supabase login + real data, same shapes the screens already use ===== */
+const SB_URL = "https://ybjotscxfaubtegahagj.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inliam90c2N4ZmF1YnRlZ2FoYWdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyMTU5ODAsImV4cCI6MjEwOTc5MTk4MH0.MtijSbKew8q3YAwn6LhzFbNo0arH5iGu_fhn1_z8Dro"; // public anon key: safe in the browser, every table is locked by row level security
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+let CATALOG = [], BY_SKU = {}, ORDERS = [], STOCK = {}, LOCS = [], ALL_LOCS = [], EVENTS = [], TRANSFERS = [], CHANNELS = [],
+  PROV = [], CODES = [], POS_LOCS = [], WH = [], YARN = {}, RUNS = [], sellable = [], NOW = new Date(), ROLE = null, SETTINGS = {}, CHECKS = {};
+const GO_LIVE = new Date("2026-11-01T00:00:00+02:00");
+
+/* ---- helpers ---- */
+async function all(build) { // page through PostgREST's 1000-row limit
+  const out = [];
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await build().range(from, from + 999);
+    if (error) throw error;
+    out.push(...data);
+    if (data.length < 1000) return out;
+  }
+}
+const SIZE_RE = /^(\d{1,2}\s*-\s*\d{1,2}|xxs|xs|s|m|l|xl|xxl|xxxl|small|medium|large|one size|os)$/i;
+function rangeOf(t) {
+  t = t.toLowerCase();
+  for (const [k, v] of [["compression","Compression"],["half-crew","Half-Crew"],["half crew","Half-Crew"],["trainer","Half-Crew"],["crew","Crew"],["ankle","Ankle"],["low cut","Low Cut"],["cycle","Cycle"],["sleeve","Sleeves"],["digits","Toe Socks"],["kids","Kids"],["women's","Apparel"],["men's","Apparel"],["cap","Accessories"],["gift card","Other"],["mystery","Packs"],["secret","Packs"],["pack","Packs"],["box","Packs"]])
+    if (t.includes(k)) return v;
+  return "Other";
+}
+function tidyColour(c) {
+  if (!c || /^default title$/i.test(c)) return "One colour";
+  return c.replace(/hi ?viz|high-viz/ig, "HighViz").replace(/\b(\w)(\w*)/g, (m, a, b) => a.toUpperCase() + b.toLowerCase()).replace(/\b(And|With)\b/g, w => w.toLowerCase()).replace(/Highviz/g, "HighViz");
+}
+const keyOf = (sku, vid) => sku || ("v" + vid);
+
+/* ---- load everything this user may see ---- */
+async function loadAll() {
+  NOW = new Date();
+  const [{ data: settings }, locs, stock] = await Promise.all([
+    sb.from("app_settings").select("key,value"),
+    all(() => sb.from("locations").select("*").order("name")),
+    all(() => sb.rpc("get_stock"))
+  ]);
+  SETTINGS = Object.fromEntries((settings || []).map(r => [r.key, r.value]));
+  ALL_LOCS = locs.map(l => ({ id: String(l.location_id), name: l.name || ("Location " + l.location_id), kind: l.kind[0].toUpperCase() + l.kind.slice(1), raw: l.kind, active: l.is_active }));
+  LOCS = ALL_LOCS.filter(l => l.raw !== "customer" && l.active).sort((a, b) => ["factory","store","events","other"].indexOf(a.raw) - ["factory","store","events","other"].indexOf(b.raw));
+
+  /* catalogue = retail variants (the store that holds stock) */
+  CATALOG = []; BY_SKU = {}; STOCK = {};
+  for (const v of stock) {
+    if (v.product_status === "archived") continue;
+    const opts = [v.option1, v.option2, v.option3].filter(Boolean);
+    const size = opts.find(o => SIZE_RE.test(o.trim())) || "";
+    const col = tidyColour(opts.find(o => o !== size) || "");
+    const key = keyOf(v.sku, v.variant_id);
+    const p = { sku: key, realSku: v.sku, vid: v.variant_id, barcode: v.barcode, t: v.product_title, r: rangeOf(v.product_title), size, col,
+      img: v.image_url, inR: 1, inW: 1, status: v.product_status };
+    CATALOG.push(p); BY_SKU[key] = p;
+    const byLoc = {}; for (const l of ALL_LOCS) byLoc[l.id] = Number(v.by_location?.[l.id] ?? 0);
+    const k = { byLoc, total: v.total, s7: v.sold_7, s30: v.sold_30, daily: v.sold_30 / 30, tracked: true, counted: v.last_count_at ? new Date(v.last_count_at) : null };
+    Object.defineProperty(k, "avail", { get() { return S.stockLoc ? (this.byLoc[S.stockLoc] ?? 0) : this.total; } });
+    Object.defineProperty(k, "cover", { get() { return this.daily ? Math.floor(this.avail / this.daily) : (this.avail > 0 ? 999 : 0); } });
+    Object.defineProperty(k, "state", { get() { const a = this.avail; if (a <= 0) return "out"; return this.daily && a / this.daily < 14 ? "low" : "ok"; } });
+    STOCK[key] = k;
+  }
+  sellable = CATALOG.filter(p => p.r !== "Packs" && p.r !== "Other");
+
+  /* sales (admins only; factory logins get nothing back here by design) */
+  ORDERS = [];
+  if (ROLE === "admin") {
+    const [orders, lines] = await Promise.all([
+      all(() => sb.from("orders").select("store_id,order_id,order_number,channel,source_name,location_id,staff_user_id,created_at,cancelled_at,financial_status,fulfillment_status,total,current_total,total_shipping,discount_codes,customer_name,company,ship_city,ship_province,is_test").eq("is_test", false).order("created_at", { ascending: false })),
+      all(() => sb.from("sales_lines").select("store_id,order_id,sku,variant_id,product_title,variant_title,net_qty,net_sales,refunded_qty,sold_by,pos_location"))
+    ]);
+    const byOrder = {};
+    for (const l of lines) (byOrder[l.store_id + ":" + l.order_id] ??= []).push(l);
+    const locNameById = Object.fromEntries(ALL_LOCS.map(l => [l.id, l.name]));
+    const posNames = new Set(), staffBy = {};
+    for (const o of orders) {
+      const ls = byOrder[o.store_id + ":" + o.order_id] || [];
+      const loc = o.channel === "wholesale" ? "Wholesale" : o.channel === "pos" ? (locNameById[String(o.location_id)] || "POS") : "Online store";
+      const out = [];
+      for (const l of ls) {
+        let key = keyOf(l.sku, l.variant_id);
+        if (o.store_id === "wholesale" && !BY_SKU[key]) key = l.sku && BY_SKU[l.sku] ? l.sku : key;
+        if (!BY_SKU[key]) { const p = { sku: key, t: l.product_title || "Unknown item", r: rangeOf(l.product_title || ""), size: "", col: tidyColour(l.variant_title || ""), inR: 0, inW: 0 }; BY_SKU[key] = p; }
+        out.push({ sku: key, qty: Number(l.net_qty), price: Number(l.net_qty) ? Number(l.net_sales) / Number(l.net_qty) : 0, refundedQty: Number(l.refunded_qty) });
+      }
+      const sub = ls.reduce((s, l) => s + Number(l.net_sales), 0);
+      const staff = ls[0]?.sold_by || null;
+      if (o.channel === "pos") { posNames.add(loc); if (staff) (staffBy[loc] ??= new Set()).add(staff); }
+      ORDERS.push({
+        key: o.store_id + ":" + o.order_id, id: o.order_number, ch: o.store_id, src: o.channel === "wholesale" ? "draft" : o.channel, loc, staff,
+        at: new Date(o.created_at), customer: o.company || o.customer_name || (o.channel === "pos" ? "Walk-in customer" : "Unknown"), company: o.company,
+        prov: o.ship_province || (o.channel === "pos" ? "In store" : "Unknown"), city: o.ship_city || (o.channel === "pos" ? loc : ""),
+        code: (o.discount_codes || [])[0] || null, lines: out, sub, disc: 0, ship: Number(o.total_shipping || 0),
+        refunded: !!o.cancelled_at, total: Number(o.current_total ?? o.total ?? 0), pairs: out.reduce((s, l) => s + l.qty, 0),
+        status: o.cancelled_at ? "Cancelled" : (o.financial_status === "refunded" ? "Refunded" : o.fulfillment_status === "fulfilled" ? "Fulfilled" : o.financial_status === "pending" ? "Awaiting payment" : "Unfulfilled")
+      });
+    }
+    POS_LOCS = [...posNames].sort().map(n => [n, 0, [...(staffBy[n] || [])].sort()]);
+    CHANNELS = ["Online store", ...POS_LOCS.map(p => p[0]), "Wholesale"];
+    CHANNELS.forEach(chCol);
+    PROV = [...new Set(ORDERS.map(o => o.prov).filter(Boolean))].sort().map(p => [p, 0, []]);
+    CODES = [null, ...new Set(ORDERS.map(o => o.code).filter(Boolean))];
+    const whMap = {};
+    for (const o of ORDERS.filter(o => o.ch === "wholesale")) whMap[o.customer] ??= [o.customer, o.prov, o.city];
+    WH = Object.values(whMap);
+  }
+
+  /* events + transfers */
+  const [evs, trs, tls] = await Promise.all([
+    all(() => sb.from("events").select("*").order("starts_on", { ascending: false })),
+    all(() => sb.from("transfers").select("*").order("created_at", { ascending: false })),
+    all(() => sb.from("transfer_lines").select("transfer_id,qty"))
+  ]);
+  const today = dayOf(NOW);
+  EVENTS = await Promise.all(evs.map(async e => {
+    const { data: rows } = await sb.rpc("get_event_report", { p_event: e.id });
+    const r = (rows || []).map(x => {
+      const key = Object.values(BY_SKU).find(p => p.vid === x.variant_id)?.sku || keyOf(x.sku, x.variant_id);
+      if (!BY_SKU[key]) BY_SKU[key] = { sku: key, t: x.product_title || "Unknown", r: "Other", size: "", col: tidyColour(x.variant_title) };
+      return { sku: key, sent: x.sent, sold: x.sold, returned: x.returned, unacc: x.unaccounted, value: Number(x.sales_value) };
+    });
+    const t = k => r.reduce((s, x) => s + x[k], 0);
+    const upcoming = e.starts_on > today;
+    return { id: e.id, tag: e.tag, name: e.name, from: e.starts_on, to: e.ends_on, rows: r, orders: null,
+      sent: t("sent"), sold: t("sold"), returned: t("returned"), unacc: t("unacc"), value: t("value"),
+      status: upcoming ? "Upcoming" : e.ends_on >= today ? "Live" : t("returned") ? "Closed" : "Awaiting return" };
+  }));
+  const linesBy = {}; for (const l of tls) { const x = linesBy[l.transfer_id] ??= { n: 0, q: 0 }; x.n++; x.q += l.qty; }
+  TRANSFERS = trs.map(t => ({ id: "TR-" + t.id, dbId: t.id, at: new Date(t.completed_at || t.created_at), from: String(t.from_location), to: String(t.to_location),
+    event: EVENTS.find(e => e.id === t.event_id) || null, pairs: linesBy[t.id]?.q || 0, lines: linesBy[t.id]?.n || 0,
+    status: t.status === "done" ? "Done" : t.status === "draft" ? "Draft" : "Cancelled" }));
+
+  /* system checks */
+  const [neg, mism, pend, fail, unm] = await Promise.all([
+    Promise.resolve(Object.values(STOCK).reduce((s, k) => s + Object.entries(k.byLoc).filter(([id, q]) => q < 0 && LOCS.some(l => l.id === id)).length, 0)),
+    sb.from("stock_mismatches").select("variant_id", { count: "exact", head: true }),
+    sb.from("stock_movements").select("id", { count: "exact", head: true }).eq("push_status", "pending"),
+    sb.from("stock_movements").select("id", { count: "exact", head: true }).eq("push_status", "failed"),
+    ROLE === "admin" ? sb.from("order_lines").select("line_id", { count: "exact", head: true }).is("variant_id", null) : Promise.resolve({ count: null })
+  ]);
+  CHECKS = { negatives: neg, mismatches: mism.count ?? 0, pending: pend.count ?? 0, failed: fail.count ?? 0, unmatched: unm.count,
+    noSku: CATALOG.filter(p => !p.realSku).length, noBarcode: CATALOG.filter(p => !p.barcode).length };
+}
+
+/* ---- push to Shopify straight after a change (the scheduler also does it every minute) ---- */
+async function pushNow() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    await fetch(SB_URL + "/functions/v1/shopify-sync", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token, apikey: SB_KEY }, body: JSON.stringify({ action: "push" }) });
+  } catch (e) { /* the scheduler will pick it up */ }
+}
+
+/* ---- login gate ---- */
+function showLogin(msg) {
+  document.body.classList.add("locked");
+  $("#gate").innerHTML = `<form class="login" id="loginForm">
+      <div class="brand">${document.querySelector(".brand svg").outerHTML}<small>Operations</small></div>
+      <h2>Sign in</h2>
+      <label for="em">Email</label><input class="inp" id="em" type="email" autocomplete="username" required>
+      <label for="pw">Password</label><input class="inp" id="pw" type="password" autocomplete="current-password" required>
+      <button class="btn" type="submit">Sign in</button>
+      <p class="err">${esc(msg || "")}</p>
+      <span class="pw">Powered by <b>Fetch<i>wave</i></b></span>
+    </form>`;
+  $("#gate").classList.add("on");
+}
+function busy(on, text) { $("#gate").classList.toggle("on", on); if (on) $("#gate").innerHTML = `<div class="loading"><span class="spin"></span>${esc(text || "Loading live data…")}</div>`; }
+
+async function afterLogin() {
+  busy(true);
+  const { data: role, error } = await sb.rpc("my_role");
+  if (error || !role) { await sb.auth.signOut(); return showLogin("This login has no access yet. Ask an admin to add you."); }
+  ROLE = role;
+  document.body.classList.remove("locked");
+  document.body.dataset.role = role;
+  try { await loadAll(); } catch (e) { busy(false); $("#view").innerHTML = `<div class="note">Could not load data: ${esc(e.message)}</div>`; return; }
+  busy(false);
+  $("#who").textContent = (await sb.auth.getUser()).data.user?.email || "";
+  if (role !== "admin" && ["", "#dashboard", "#sales", "#orders", "#wholesale"].includes(location.hash)) location.hash = "#products";
+  document.querySelector(".sample")?.remove();
+  route();
+}
+async function refresh(msg) { busy(true, msg || "Updating…"); try { await loadAll(); } finally { busy(false); } route(); }
+
+function BOOT() {
+  document.addEventListener("submit", async e => {
+    if (e.target.id !== "loginForm") return;
+    e.preventDefault();
+    const btn = e.target.querySelector("button"); btn.disabled = true; btn.textContent = "Signing in…";
+    const { error } = await sb.auth.signInWithPassword({ email: $("#em").value.trim(), password: $("#pw").value });
+    if (error) { showLogin("Email or password is wrong."); return; }
+    afterLogin();
+  });
+  document.addEventListener("click", async e => {
+    if (e.target.closest("#signOut")) { await sb.auth.signOut(); location.hash = ""; showLogin(); }
+    if (e.target.closest("#reload")) refresh("Refreshing…");
+  });
+  sb.auth.getSession().then(({ data }) => data.session ? afterLogin() : showLogin());
+}
+
 /* ===== DASHBOARD + SALES ===== */
 Chart.defaults.font.family = "Figtree, sans-serif";
 Chart.defaults.color = "#6B6B66";
 Chart.defaults.font.weight = 600;
-const CH_COL = { "Online store": "#E0E123", "POS Store": "#A3A40C", "POS Cape Town": "#6E6F00", "POS Events": "#C9CA6B", "Wholesale": "#111111" };
+Object.assign(CH_COL, { "Online store": "#E0E123", "POS Store": "#A3A40C", "POS Cape Town": "#6E6F00", "POS Events": "#C9CA6B", "Wholesale": "#111111" });
 const kpi = (lbl, val, d, hero) => `<div class="card kpi c3 ${hero ? "hero" : ""}"><span class="lbl">${lbl}</span><span class="val">${val}</span>${d}</div>`;
 const thumb = p => `<span class="th" style="background:${hexFor(p.col)}">${p.img ? `<img src="${p.img}" alt="" loading="lazy" onerror="this.remove()">` : ""}</span>`;
 const money = v => "R" + (v >= 1000 ? (v / 1000).toFixed(v >= 1e5 ? 0 : 1) + "k" : Math.round(v));
@@ -414,14 +581,14 @@ function days() { const [a, b] = rangeFor(S.preset); const n = Math.max(1, Math.
 function byDayChannel(os) {
   const { a, n, lab } = days(), sets = {};
   os.forEach(o => { const i = Math.floor((o.at - a) / 864e5); if (i < 0 || i >= n) return; (sets[o.loc] ??= Array(n).fill(0))[i] += net(o); });
-  return { lab, sets: CHANNELS.filter(c => sets[c]).map(c => ({ label: c, data: sets[c], backgroundColor: CH_COL[c], borderRadius: 3, stack: "s" })) };
+  return { lab, sets: CHANNELS.filter(c => sets[c]).map(c => ({ label: c, data: sets[c], backgroundColor: chCol(c), borderRadius: 3, stack: "s" })) };
 }
 function byChannel(os) { return CHANNELS.map(c => ({ c, s: os.filter(o => o.loc === c).reduce((t, o) => t + net(o), 0), n: os.filter(o => o.loc === c).length })).filter(x => x.n); }
 const stackOpts = { maintainAspectRatio: false, plugins: { legend: { position: "top", align: "end", labels: { boxWidth: 10, boxHeight: 10 } }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${R(c.raw)}` } } },
   scales: { x: { stacked: true, grid: { display: false }, ticks: { maxTicksLimit: 10 } }, y: { stacked: true, grid: { color: "#EEEEE8" }, ticks: { callback: money } } } };
-const donut = (el, rows) => charts.push(new Chart(el, { type: "doughnut", data: { labels: rows.map(r => r.c), datasets: [{ data: rows.map(r => r.s), backgroundColor: rows.map(r => CH_COL[r.c]), borderWidth: 2, borderColor: "#fff" }] },
+const donut = (el, rows) => charts.push(new Chart(el, { type: "doughnut", data: { labels: rows.map(r => r.c), datasets: [{ data: rows.map(r => r.s), backgroundColor: rows.map(r => chCol(r.c)), borderWidth: 2, borderColor: "#fff" }] },
   options: { maintainAspectRatio: false, cutout: "66%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.label}: ${R(c.raw)}` } } } } }));
-const chList = rows => { const t = rows.reduce((s, r) => s + r.s, 0) || 1; return `<div class="list">${rows.map(r => `<div class="row"><span><span class="sw" style="background:${CH_COL[r.c]}"></span> ${r.c} <span class="muted">· ${N(r.n)} orders</span></span><b>${R(r.s)} <span class="muted">${(r.s / t * 100).toFixed(0)}%</span></b></div>`).join("")}</div>`; };
+const chList = rows => { const t = rows.reduce((s, r) => s + r.s, 0) || 1; return `<div class="list">${rows.map(r => `<div class="row"><span><span class="sw" style="background:${chCol(r.c)}"></span> ${r.c} <span class="muted">· ${N(r.n)} orders</span></span><b>${R(r.s)} <span class="muted">${(r.s / t * 100).toFixed(0)}%</span></b></div>`).join("")}</div>`; };
 
 VIEWS.dashboard = () => {
   const cur = curOrders(), prev = prevOrders(), T = totals(cur), P = totals(prev), ls = lines(cur);
@@ -450,7 +617,7 @@ VIEWS.dashboard = () => {
   <div class="grid">
     <section class="card c7"><div class="hd"><h2>Latest orders</h2><a href="#orders" class="muted">All orders</a></div>${orderTable(cur.slice(0, 8))}</section>
     <section class="card c5"><div class="hd"><h2>Yarn running low</h2><a href="#yarn" class="muted">Yarn &amp; production</a></div>
-      <div class="list">${low.map(y => `<div class="row"><span><span class="sw" style="background:${hexFor(y.colour)}"></span> ${esc(y.yarn)}<div class="muted">${y.stock} kg on hand · ${y.cover} days cover</div></span><span class="pill p-${y.state}">${y.state === "bad" ? "Order now" : y.state === "warn" ? "Order soon" : "OK"}</span></div>`).join("")}</div></section>
+      <div class="list">${low.length ? "" : `<div class="muted">No yarn set up yet. Add yarns and recipes on the Yarn page.</div>`}${low.map(y => `<div class="row"><span><span class="sw" style="background:${hexFor(y.colour)}"></span> ${esc(y.yarn)}<div class="muted">${y.stock} kg on hand · ${y.cover} days cover</div></span><span class="pill p-${y.state}">${y.state === "bad" ? "Order now" : y.state === "warn" ? "Order soon" : "OK"}</span></div>`).join("")}</div></section>
   </div>`;
 };
 VIEWS.dashboard.after = () => {
@@ -505,7 +672,7 @@ VIEWS.sales = () => {
     </tr></thead><tbody>
     ${rows.map(r => { const pv = prevMap.get(r.k), d = pv ? (r.rev - pv) / pv * 100 : null, sh = tot ? r.rev / tot * 100 : 0;
       const p = S.by === "sku" ? BY_SKU[r.k] : S.by === "product" ? firstSku(r.k) : null;
-      const label = p ? `<div class="prod">${thumb(p)}<span>${esc(r.k)}${S.by === "sku" ? `<div class="muted">${esc(p.t)} · ${esc(p.size)} · ${esc(p.col)}</div>` : ""}</span></div>` : `${S.by === "colour" ? `<span class="sw" style="background:${hexFor(r.k)}"></span> ` : S.by === "channel" ? `<span class="sw" style="background:${CH_COL[r.k]}"></span> ` : ""}${esc(r.k)}`;
+      const label = p ? `<div class="prod">${thumb(p)}<span>${esc(r.k)}${S.by === "sku" ? `<div class="muted">${esc(p.t)} · ${esc(p.size)} · ${esc(p.col)}</div>` : ""}</span></div>` : `${S.by === "colour" ? `<span class="sw" style="background:${hexFor(r.k)}"></span> ` : S.by === "channel" ? `<span class="sw" style="background:${chCol(r.k)}"></span> ` : ""}${esc(r.k)}`;
       return `<tr><td>${label}</td><td class="n">${N(r.orders)}</td><td class="n">${N(r.qty)}</td><td class="n"><b>${R(r.rev)}</b></td><td><div class="share"><div class="bar-in"><i style="width:${Math.min(100, sh * 2.5).toFixed(1)}%"></i></div><span>${sh.toFixed(1)}%</span></div></td>${S.compare ? `<td class="n ${d == null ? "muted" : d >= 0 ? "up" : "down"}">${d == null ? "New" : (d >= 0 ? "▲ " : "▼ ") + pct(d)}</td>` : ""}</tr>`; }).join("") || `<tr><td colspan="6" class="empty">No sales match these filters</td></tr>`}
     </tbody></table></div>
     <p id="copied" class="muted" style="margin:0"></p>
@@ -514,7 +681,7 @@ VIEWS.sales = () => {
 VIEWS.sales.after = () => {
   const ls = lines(curOrders()), { a, n, lab } = days(), sets = {};
   ls.forEach(l => { const i = Math.floor((l.o.at - a) / 864e5); if (i >= 0 && i < n) (sets[l.o.loc] ??= Array(n).fill(0))[i] += l.rev; });
-  charts.push(new Chart($("#sTrend"), { type: "bar", data: { labels: lab, datasets: CHANNELS.filter(c => sets[c]).map(c => ({ label: c, data: sets[c], backgroundColor: CH_COL[c], borderRadius: 3, stack: "s" })) }, options: stackOpts }));
+  charts.push(new Chart($("#sTrend"), { type: "bar", data: { labels: lab, datasets: CHANNELS.filter(c => sets[c]).map(c => ({ label: c, data: sets[c], backgroundColor: chCol(c), borderRadius: 3, stack: "s" })) }, options: stackOpts }));
   const ch = CHANNELS.map(c => { const x = ls.filter(l => l.o.loc === c); return { c, s: x.reduce((t, l) => t + l.rev, 0), n: new Set(x.map(l => l.o.id)).size }; }).filter(x => x.n);
   donut($("#sDonut"), ch); $("#sChList").innerHTML = chList(ch);
   const top = group(ls, GROUPS[S.by][1]).sort((x, y) => y.rev - x.rev).slice(0, 10);
@@ -531,7 +698,7 @@ function copyCsv() {
 function orderTable(os) {
   if (!os.length) return `<div class="empty">No orders in this period</div>`;
   return `<div class="tw"><table><thead><tr><th>Order</th><th>Date</th><th>Channel</th><th>Customer</th><th>Location</th><th class="n">Pairs</th><th class="n">Total</th><th>Status</th></tr></thead><tbody>
-  ${os.map(o => `<tr class="click" data-order="${o.id}"><td><b>${o.id}</b></td><td>${dLong(o.at)}</td><td>${chanPill(o)}</td><td>${esc(o.customer)}</td><td>${esc(o.city)}, ${esc(o.prov)}</td><td class="n">${o.pairs}</td><td class="n">${R(o.total)}</td><td><span class="pill ${o.status === "Fulfilled" ? "p-good" : o.status === "Refunded" ? "p-bad" : "p-warn"}">${o.status}</span></td></tr>`).join("")}
+  ${os.map(o => `<tr class="click" data-order="${o.key || o.id}"><td><b>${o.id}</b></td><td>${dLong(o.at)}</td><td>${chanPill(o)}</td><td>${esc(o.customer)}</td><td>${esc(o.city)}, ${esc(o.prov)}</td><td class="n">${o.pairs}</td><td class="n">${R(o.total)}</td><td><span class="pill ${o.status === "Fulfilled" ? "p-good" : o.status === "Refunded" ? "p-bad" : "p-warn"}">${o.status}</span></td></tr>`).join("")}
   </tbody></table></div>`;
 }
 function yarnFor(ls) {
@@ -540,7 +707,7 @@ function yarnFor(ls) {
   return Object.entries(m).sort((a, b) => b[1] - a[1]);
 }
 function openOrder(id) {
-  const o = ORDERS.find(x => x.id === id); if (!o) return;
+  const o = ORDERS.find(x => (x.key || x.id) === id); if (!o) return;
   const y = yarnFor(o.lines);
   $("#drawer").innerHTML = `<header><h3>Order ${o.id}</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
   <div class="body">
@@ -571,7 +738,7 @@ VIEWS.orders = () => {
 VIEWS.wholesale = () => {
   const all = ORDERS.filter(o => o.ch === "wholesale"), rg = rangeFor(S.preset), cur = all.filter(o => inRange(o, rg));
   const acc = WH.map(([name, prov, city]) => {
-    const mine = all.filter(o => o.company === name), inP = cur.filter(o => o.company === name);
+    const mine = all.filter(o => (o.company || o.customer) === name), inP = cur.filter(o => (o.company || o.customer) === name);
     const last = mine[0]?.at, days = last ? Math.floor((NOW - last) / 864e5) : null;
     return { name, prov, city, orders: inP.length, pairs: inP.reduce((s, o) => s + o.pairs, 0), rev: inP.reduce((s, o) => s + net(o), 0), life: mine.reduce((s, o) => s + net(o), 0), last, days };
   }).sort((a, b) => b.rev - a.rev);
@@ -643,17 +810,19 @@ VIEWS.products = () => {
       </tbody></table></div></section>`;
   }
   return `<div class="grid">
-    ${kpi("Pairs available", N(units), `<span>Lowest stock shown first</span>`, true)}
+    ${kpi("Pairs available", N(units), `<span>${locName(S.stockLoc)}</span>`, true)}
     ${kpi("Out of stock", N(out), `<span class="muted">SKUs at zero</span>`)}
     ${kpi("Low stock", N(low), `<span class="muted">Under 14 days of cover</span>`)}
     ${kpi("Sold last 30 days", N(s30), `<span class="muted">All channels</span>`)}
   </div>
   <section class="card c12"><div class="bar">
+    <div class="seg" role="group" aria-label="Location"><button data-sl="" class="${!S.stockLoc ? "on" : ""}">All locations</button>${LOCS.map(l => `<button data-sl="${l.id}" class="${S.stockLoc === l.id ? "on" : ""}">${l.name.replace("Gilnokie ", "")}</button>`).join("")}</div>
     <div class="seg" role="group" aria-label="Layout"><button data-sv="catalogue" class="${S.stockView === "catalogue" ? "on" : ""}">Catalogue</button><button data-sv="table" class="${S.stockView === "table" ? "on" : ""}">Table</button></div>
     <input class="sel grow" id="sq" placeholder="Search product, SKU or colour" value="${esc(S.stockQ)}">
     <select class="sel" data-s="stockRange" aria-label="Range">${opts(ranges, S.stockRange, "All ranges")}</select>
     <select class="sel" data-s="stockState" aria-label="Stock status"><option value="">All stock</option>${[["low", "Low or out"], ["out", "Out of stock"], ["ok", "In stock"]].map(([v, l]) => `<option value="${v}" ${S.stockState === v ? "selected" : ""}>${l}</option>`).join("")}</select>
     <span class="muted">${N(prods.length)} products · lowest first</span>
+    <span class="grow-sp"></span><button class="btn ghost" data-sa="count">Stock take</button><button class="btn" data-sa="production">Add production</button>
   </div></section>
   ${body}`;
 };
@@ -667,13 +836,307 @@ function openProduct(t) {
   <div class="body">
     <div class="pimg big" style="background:${hexFor(g.col)}">${g.img ? `<img src="${g.img}" alt="" onerror="this.remove()">` : ""}</div>
     <section class="card"><div class="hd"><h2>Available by variant</h2><small>All channels</small></div>${matrix(g)}</section>
-    <section class="card"><h2>How available is worked out</h2>${(() => { const t = k => vars.reduce((s, v) => s + STOCK[v.sku][k], 0); return `<dl class="kv"><dt>Last stock count</dt><dd>${dShort(new Date(Math.max(...vars.map(v => STOCK[v.sku].counted))))}</dd><dt>Counted total (wholesale store)</dt><dd>${N(t("shopify"))}</dd><dt>Retail sold since last count</dt><dd class="down">−${N(t("retailSince"))}</dd><dt>Available</dt><dd><b>${N(t("avail"))}</b></dd></dl>`; })()}
-      <p class="muted" style="margin:0">Staff enter the counted total in the wholesale store. Each new count resets the retail subtraction, and retail online and POS sales after it are taken off here.</p></section>
+    <section class="card"><h2>Stock by location</h2>${(() => { const t = id => vars.reduce((s, v) => s + STOCK[v.sku].byLoc[id], 0); return `<div class="list">${LOCS.map(l => `<div class="row"><span>${l.name} <span class="muted">· ${l.kind}</span></span><b>${N(t(l.id))}</b></div>`).join("")}<div class="row"><span><b>Total</b></span><b>${N(LOCS.reduce((s, l) => s + t(l.id), 0))}</b></div></div>`; })()}
+      <p class="muted" style="margin:0">This app holds the true stock. Every change is pushed to the Shopify retail store, per location.</p></section>
     <section class="card"><h2>Recent stock out</h2><div class="list">${moves.map(o => { const q = o.lines.filter(l => skus.has(l.sku)).reduce((s, l) => s + l.qty, 0); return `<div class="row"><span>${chanPill(o)} <span class="muted">${o.id} · ${dShort(o.at)}</span></span><b>−${q}</b></div>`; }).join("") || `<div class="muted">No recent orders</div>`}</div></section>
     <section class="card"><h2>Stock added (production)</h2><div class="list">${runs.map(r => `<div class="row"><span>${r.id} <span class="muted">· ${dShort(r.at)} · ${esc(BY_SKU[r.sku].size)} ${esc(BY_SKU[r.sku].col)}</span></span><b class="up">+${N(r.qty)}</b></div>`).join("") || `<div class="muted">No recent runs</div>`}</div></section>
   </div>`;
   $("#drawer").classList.add("on");
 }
+
+/* ===== LOCATIONS, TRANSFERS AND EVENTS (sample data; live version reads the Supabase ledger) ===== */
+S.stockLoc ??= "";
+const tagPill = e => e ? `<span class="pill p-tag">#${esc(e.tag)}</span>` : `<span class="muted">No tag</span>`;
+const stPillT = s => `<span class="pill ${s === "Done" || s === "Closed" ? "p-good" : s === "Draft" || s === "Upcoming" ? "p-retail" : s === "Live" ? "p-wh" : "p-warn"}">${s}</span>`;
+
+/* ---- transfers ---- */
+VIEWS.transfers = () => {
+  const done = TRANSFERS.filter(t => t.status === "Done"), toEv = done.filter(t => t.to === "events"), back = done.filter(t => t.from === "events");
+  return `<div class="grid">
+    ${kpi("Transfers this month", N(done.filter(t => t.at.getMonth() === NOW.getMonth()).length), "", true)}
+    ${kpi("Pairs sent to events", N(toEv.reduce((s, t) => s + t.pairs, 0)), `<span class="muted">All time</span>`)}
+    ${kpi("Pairs returned from events", N(back.reduce((s, t) => s + t.pairs, 0)), `<span class="muted">All time</span>`)}
+    ${kpi("Drafts", N(TRANSFERS.filter(t => t.status === "Draft").length), `<span class="muted">Not sent yet</span>`)}
+  </div>
+  <section class="card c12"><div class="hd"><h2>Transfers</h2><button class="btn" data-newtr>New transfer</button></div>
+    <div class="tw"><table><thead><tr><th>Transfer</th><th>Date</th><th>From</th><th></th><th>To</th><th>Event tag</th><th class="n">Lines</th><th class="n">Pairs</th><th>Status</th></tr></thead><tbody>
+    ${TRANSFERS.map(t => `<tr><td><b>${t.id}</b></td><td>${dShort(t.at)}</td><td>${locName(t.from)}</td><td class="muted">→</td><td>${locName(t.to)}</td><td>${tagPill(t.event)}</td><td class="n">${t.lines}</td><td class="n">${N(t.pairs)}</td><td>${stPillT(t.status)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="muted" style="margin:0">Completing a transfer moves the stock in Shopify retail straight away: out of one location, into the other, with the event tag as the reference.</p></section>`;
+};
+
+function openTransferForm() {
+  const pick = sellable.filter(p => p.inW).slice(0, 4);
+  $("#drawer").innerHTML = `<header><h3>New transfer</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <div class="form">
+      <label for="trFrom">From</label><select class="sel" id="trFrom">${LOCS.map(l => `<option>${l.name}</option>`).join("")}</select>
+      <label for="trTo">To</label><select class="sel" id="trTo">${LOCS.map((l, i) => `<option ${i === 2 ? "selected" : ""}>${l.name}</option>`).join("")}</select>
+      <label for="trEv">Event tag</label><select class="sel" id="trEv"><option value="">No event</option>${EVENTS.map((e, i) => `<option ${i === 3 ? "selected" : ""}>#${e.tag}</option>`).join("")}<option>+ New event…</option></select>
+    </div>
+    <section class="card"><div class="hd"><h2>Scan or search items</h2><small>Barcode scanners type straight into this box</small></div>
+      <input class="inp" id="scan" placeholder="Scan barcode or type product / SKU" style="width:100%">
+      <div class="tw"><table><thead><tr><th>Product</th><th class="n">Factory</th><th class="n">Qty</th></tr></thead><tbody>
+        ${pick.map((p, i) => `<tr><td><div class="prod">${thumb(p)}<span>${esc(p.t)}<div class="muted">${esc(p.size)} · ${esc(p.col)}</div></span></div></td><td class="n">${N(STOCK[p.sku].byLoc.factory)}</td><td class="n"><div class="qty"><button aria-label="Less">−</button><b>${[24, 24, 12, 12][i]}</b><button aria-label="More">+</button></div></td></tr>`).join("")}
+      </tbody></table></div></section>
+    <dl class="kv"><dt>Total pairs</dt><dd><b>72</b></dd><dt>Effect in Shopify</dt><dd>Factory −72, Events +72, tagged #black-week-popup-2026</dd></dl>
+    <div class="bar"><button class="btn">Complete transfer</button><button class="btn ghost">Save as draft</button></div>
+  </div>`;
+  $("#drawer").classList.add("on");
+}
+
+/* ---- events ---- */
+VIEWS.events = () => {
+  const past = EVENTS.filter(e => e.status !== "Upcoming");
+  return `<div class="grid">
+    ${kpi("Event sales", R(past.reduce((s, e) => s + e.value, 0)), `<span>${N(past.length)} events</span>`, true)}
+    ${kpi("Pairs sold at events", N(past.reduce((s, e) => s + e.sold, 0)), "")}
+    ${kpi("Sell-through", (() => { const s = past.reduce((t, e) => t + e.sent, 0); return s ? Math.round(past.reduce((t, e) => t + e.sold, 0) / s * 100) + "%" : "0%"; })(), `<span class="muted">Sold ÷ sent</span>`)}
+    ${kpi("Unaccounted pairs", N(past.reduce((s, e) => s + e.unacc, 0)), `<span class="muted">Sent − sold − returned</span>`)}
+  </div>
+  <section class="card c12"><div class="hd"><h2>Events</h2><button class="btn" data-newev>New event</button></div>
+    <div class="tw"><table><thead><tr><th>Event</th><th>Tag</th><th>Dates</th><th class="n">Sent</th><th class="n">Sold</th><th class="n">Returned</th><th class="n">Unaccounted</th><th class="n">Sales</th><th>Status</th></tr></thead><tbody>
+    ${EVENTS.map(e => `<tr class="click" data-ev="${e.id}"><td><b>${esc(e.name)}</b></td><td>${tagPill(e)}</td><td>${dShort(new Date(e.from))} to ${dShort(new Date(e.to))}</td><td class="n">${N(e.sent)}</td><td class="n">${N(e.sold)}</td><td class="n">${N(e.returned)}</td>
+      <td class="n ${e.unacc ? "down" : ""}">${N(e.unacc)}</td><td class="n"><b>${R(e.value)}</b></td><td>${stPillT(e.status)}</td></tr>`).join("")}
+    </tbody></table></div></section>`;
+};
+
+function openEvent(id) {
+  const e = EVENTS.find(x => x.id === +id); if (!e) return;
+  $("#drawer").innerHTML = `<header><h3>${esc(e.name)}</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <dl class="kv"><dt>Tag</dt><dd>${tagPill(e)}</dd><dt>Dates</dt><dd>${dShort(new Date(e.from))} to ${dShort(new Date(e.to))}</dd><dt>POS orders</dt><dd>${N(e.orders)}</dd><dt>Sales</dt><dd><b>${R(e.value)}</b></dd></dl>
+    <div class="evsum">${[["Sent", e.sent], ["Sold", e.sold], ["Returned", e.returned], ["Unaccounted", e.unacc]].map(([l, v]) => `<div><span class="lbl">${l}</span><b class="${l === "Unaccounted" && v ? "down" : ""}">${N(v)}</b></div>`).join("")}</div>
+    <section class="card"><h2>By product</h2><div class="tw"><table><thead><tr><th>Product</th><th class="n">Sent</th><th class="n">Sold</th><th class="n">Back</th><th class="n">Missing</th></tr></thead><tbody>
+      ${e.rows.map(r => { const p = BY_SKU[r.sku]; return `<tr><td><div class="prod">${thumb(p)}<span>${esc(p.t)}<div class="muted">${esc(p.size)} · ${esc(p.col)}</div></span></div></td><td class="n">${r.sent}</td><td class="n">${r.sold}</td><td class="n">${r.returned}</td><td class="n ${r.unacc ? "down" : ""}">${r.unacc}</td></tr>`; }).join("") || `<tr><td colspan="5" class="empty">Nothing sent to this event yet</td></tr>`}
+    </tbody></table></div></section>
+    <p class="muted" style="margin:0">Sold = POS sales at the Events location between the event dates. Sent and returned come from transfers tagged #${esc(e.tag)}.</p>
+  </div>`;
+  $("#drawer").classList.add("on");
+}
+
+function openEventForm() {
+  $("#drawer").innerHTML = `<header><h3>New event</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <div class="form">
+      <label for="evName">Event name</label><input class="inp" id="evName" placeholder="e.g. Comrades 2026">
+      <label for="evTag">Tag</label><input class="inp" id="evTag" placeholder="comrades-2026">
+      <label for="evFrom">First day</label><input class="inp" id="evFrom" type="date">
+      <label for="evTo">Last day</label><input class="inp" id="evTo" type="date">
+    </div>
+    <p class="muted" style="margin:0">POS sales at the Events location between these dates count towards this event. Pick the tag on every transfer to and from it.</p>
+    <div class="bar"><button class="btn">Create event</button></div>
+  </div>`;
+  $("#drawer").classList.add("on");
+}
+
+/* ---- stock take / production ---- */
+function openStockAction(kind) {
+  const p = sellable.find(x => x.inW && x.r === "Compression"), k = STOCK[p.sku];
+  $("#drawer").innerHTML = `<header><h3>${kind === "count" ? "Stock take" : "Add production"}</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <div class="form">
+      <label for="saLoc">Location</label><select class="sel" id="saLoc">${LOCS.map(l => `<option>${l.name}</option>`).join("")}</select>
+      <label for="saScan">Product</label><input class="inp" id="saScan" placeholder="Scan barcode or search" value="${esc(p.t)} · ${esc(p.size)} · ${esc(p.col)}">
+      <label for="saQty">${kind === "count" ? "Counted on the shelf" : "Pairs made"}</label><input class="inp" id="saQty" type="number" min="0" value="${kind === "count" ? k.byLoc.factory : 120}">
+    </div>
+    <dl class="kv"><dt>Currently in the app</dt><dd>${N(k.byLoc.factory)}</dd><dt>After saving</dt><dd><b>${N(kind === "count" ? k.byLoc.factory : k.byLoc.factory + 120)}</b></dd><dt>Shopify retail</dt><dd>Updated automatically within a minute</dd></dl>
+    <div class="bar"><button class="btn">${kind === "count" ? "Save count" : "Add to stock"}</button></div>
+  </div>`;
+  $("#drawer").classList.add("on");
+}
+
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-newtr]")) openTransferForm();
+  if (e.target.closest("[data-newev]")) openEventForm();
+  const ev = e.target.closest("[data-ev]"); if (ev) openEvent(ev.dataset.ev);
+  const sl = e.target.closest("[data-sl]"); if (sl) { S.stockLoc = sl.dataset.sl; route(); }
+  const sa = e.target.closest("[data-sa]"); if (sa) openStockAction(sa.dataset.sa);
+});
+
+/* ===== LIVE ACTIONS: transfers, stock takes, production, events, settings (replace the sample forms) ===== */
+const productLabel = p => `${p.t} · ${p.size || "One size"} · ${p.col}${p.realSku ? " · " + p.realSku : ""}`;
+const pickable = () => CATALOG.filter(p => p.vid && p.status !== "archived");
+const datalist = () => `<datalist id="prodList">${pickable().map(p => `<option value="${esc(productLabel(p))}"></option>`).join("")}</datalist>`;
+function findProduct(text) {
+  const t = String(text || "").trim(); if (!t) return null;
+  const list = pickable();
+  return list.find(p => p.barcode && p.barcode === t) || list.find(p => p.realSku && p.realSku.toLowerCase() === t.toLowerCase())
+    || list.find(p => productLabel(p) === t) || list.find(p => productLabel(p).toLowerCase().includes(t.toLowerCase())) || null;
+}
+const locOptions = (sel, list = ALL_LOCS.filter(l => l.active)) => list.map(l => `<option value="${l.id}" ${String(sel) === l.id ? "selected" : ""}>${esc(l.name)}</option>`).join("");
+const factoryId = () => (ALL_LOCS.find(l => l.raw === "factory") || LOCS[0] || {}).id;
+const eventsLocId = () => (ALL_LOCS.find(l => l.raw === "events") || {}).id;
+function toast(msg, bad) { const t = document.createElement("div"); t.className = "toast" + (bad ? " bad" : ""); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 4000); }
+const drawer = html => { $("#drawer").innerHTML = html; $("#drawer").classList.add("on"); };
+
+/* ---------- transfers ---------- */
+let TR = null; // transfer being built
+openTransferForm = function () {
+  TR = { from: factoryId(), to: eventsLocId() || LOCS[1]?.id, event: "", lines: [] };
+  renderTransfer();
+};
+function renderTransfer(msg) {
+  const total = TR.lines.reduce((s, l) => s + l.qty, 0);
+  const ev = EVENTS.find(e => String(e.id) === String(TR.event));
+  drawer(`<header><h3>New transfer</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <div class="form">
+      <label for="trFrom">From</label><select class="sel" id="trFrom">${locOptions(TR.from)}</select>
+      <label for="trTo">To</label><select class="sel" id="trTo">${locOptions(TR.to)}</select>
+      <label for="trEv">Event tag</label><select class="sel" id="trEv"><option value="">No event</option>${EVENTS.map(e => `<option value="${e.id}" ${String(TR.event) === String(e.id) ? "selected" : ""}>#${esc(e.tag)}</option>`).join("")}</select>
+    </div>
+    <section class="card"><div class="hd"><h2>Scan or search items</h2><small>Scanners type straight in. Press Enter to add</small></div>
+      <input class="inp" id="scan" list="prodList" placeholder="Scan barcode, SKU or type a product name" style="width:100%" autocomplete="off">${datalist()}
+      ${msg ? `<p class="err" style="margin:0">${esc(msg)}</p>` : ""}
+      <div class="tw"><table><thead><tr><th>Product</th><th class="n">At origin</th><th class="n">Qty</th><th></th></tr></thead><tbody>
+        ${TR.lines.map((l, i) => { const p = BY_SKU[l.key]; return `<tr><td><div class="prod">${thumb(p)}<span>${esc(p.t)}<div class="muted">${esc(p.size)} · ${esc(p.col)}</div></span></div></td>
+          <td class="n">${N(STOCK[l.key]?.byLoc[TR.from] ?? 0)}</td>
+          <td class="n"><div class="qty"><button data-q="${i}:-1" aria-label="Less">−</button><input class="qin" data-qi="${i}" type="number" min="1" value="${l.qty}"><button data-q="${i}:1" aria-label="More">+</button></div></td>
+          <td><button class="x" data-rm="${i}" aria-label="Remove">✕</button></td></tr>`; }).join("") || `<tr><td colspan="4" class="empty">Scan or search to add items</td></tr>`}
+      </tbody></table></div></section>
+    <dl class="kv"><dt>Total pairs</dt><dd><b>${N(total)}</b></dd><dt>Effect in Shopify</dt><dd>${esc(locName(TR.from))} −${N(total)}, ${esc(locName(TR.to))} +${N(total)}${ev ? `, tagged #${esc(ev.tag)}` : ""}</dd></dl>
+    <div class="bar"><button class="btn" id="trDone" ${total ? "" : "disabled"}>Complete transfer</button><button class="btn ghost" id="trDraft" ${total ? "" : "disabled"}>Save as draft</button></div>
+  </div>`);
+  setTimeout(() => $("#scan")?.focus(), 50);
+}
+function addLine(text) {
+  const p = findProduct(text);
+  if (!p) return renderTransfer(`Nothing found for "${text}"`);
+  const l = TR.lines.find(x => x.key === p.sku);
+  l ? l.qty++ : TR.lines.push({ key: p.sku, vid: p.vid, qty: 1 });
+  renderTransfer();
+}
+async function saveTransfer(complete) {
+  if (TR.from === TR.to) return renderTransfer("From and To must be different locations");
+  const btn = $(complete ? "#trDone" : "#trDraft"); btn.disabled = true; btn.textContent = "Saving…";
+  const { data: t, error } = await sb.from("transfers").insert({ from_location: Number(TR.from), to_location: Number(TR.to), event_id: TR.event ? Number(TR.event) : null }).select("id").single();
+  if (error) return renderTransfer(error.message);
+  const { error: e2 } = await sb.from("transfer_lines").insert(TR.lines.map(l => ({ transfer_id: t.id, variant_id: l.vid, qty: l.qty })));
+  if (e2) return renderTransfer(e2.message);
+  if (complete) {
+    const { error: e3 } = await sb.rpc("complete_transfer", { p_transfer: t.id });
+    if (e3) return renderTransfer(e3.message);
+    pushNow();
+  }
+  $("#drawer").classList.remove("on");
+  toast(complete ? `Transfer TR-${t.id} done. Shopify updates within a minute.` : `Draft TR-${t.id} saved.`);
+  refresh();
+}
+
+/* ---------- stock take and production ---------- */
+let SA = null;
+openStockAction = function (kind) { SA = { kind, loc: S.stockLoc || factoryId(), p: null, qty: "" }; renderStockAction(); };
+function renderStockAction(msg) {
+  const k = SA.p ? STOCK[SA.p.sku] : null, cur = k ? (k.byLoc[SA.loc] ?? 0) : null, q = Number(SA.qty);
+  const after = SA.qty === "" || !k ? "—" : N(SA.kind === "count" ? q : cur + q);
+  drawer(`<header><h3>${SA.kind === "count" ? "Stock take" : "Add production"}</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <div class="form">
+      <label for="saLoc">Location</label><select class="sel" id="saLoc">${locOptions(SA.loc, LOCS)}</select>
+      <label for="saScan">Product</label><input class="inp" id="saScan" list="prodList" placeholder="Scan barcode or search" value="${SA.p ? esc(productLabel(SA.p)) : ""}" autocomplete="off">${datalist()}
+      <label for="saQty">${SA.kind === "count" ? "Counted on the shelf" : "Pairs made"}</label><input class="inp" id="saQty" type="number" min="${SA.kind === "count" ? 0 : 1}" value="${SA.qty}">
+    </div>
+    ${msg ? `<p class="err" style="margin:0">${esc(msg)}</p>` : ""}
+    <dl class="kv"><dt>Currently in the app</dt><dd>${cur == null ? "Pick a product" : N(cur)}</dd><dt>After saving</dt><dd><b>${after}</b></dd><dt>Shopify retail</dt><dd>Updated automatically within a minute</dd></dl>
+    <div class="bar"><button class="btn" id="saSave" ${SA.p && SA.qty !== "" ? "" : "disabled"}>${SA.kind === "count" ? "Save count" : "Add to stock"}</button></div>
+  </div>`);
+}
+async function saveStockAction() {
+  const q = Number(SA.qty);
+  if (!Number.isInteger(q) || q < 0 || (SA.kind !== "count" && q === 0)) return renderStockAction("Enter a whole number");
+  $("#saSave").disabled = true;
+  const r = SA.kind === "count"
+    ? await sb.rpc("stock_count", { p_variant: SA.p.vid, p_location: Number(SA.loc), p_counted: q, p_note: null })
+    : await sb.rpc("stock_add", { p_variant: SA.p.vid, p_location: Number(SA.loc), p_qty: q, p_kind: "production", p_note: null });
+  if (r.error) return renderStockAction(r.error.message);
+  pushNow();
+  $("#drawer").classList.remove("on");
+  toast(SA.kind === "count" ? "Count saved." : `${q} pairs added.`);
+  refresh();
+}
+
+/* ---------- events ---------- */
+openEventForm = function (msg) {
+  drawer(`<header><h3>New event</h3><button id="closeDrawer" aria-label="Close">✕</button></header>
+  <div class="body">
+    <div class="form">
+      <label for="evName">Event name</label><input class="inp" id="evName" placeholder="e.g. Comrades 2026">
+      <label for="evTag">Tag</label><input class="inp" id="evTag" placeholder="comrades-2026">
+      <label for="evFrom">First day</label><input class="inp" id="evFrom" type="date">
+      <label for="evTo">Last day</label><input class="inp" id="evTo" type="date">
+    </div>
+    ${typeof msg === "string" ? `<p class="err" style="margin:0">${esc(msg)}</p>` : ""}
+    <p class="muted" style="margin:0">POS sales at the Events location between these dates count towards this event. Pick the tag on every transfer to and from it.</p>
+    <div class="bar"><button class="btn" id="evSave">Create event</button></div>
+  </div>`);
+};
+async function saveEvent() {
+  const name = $("#evName").value.trim(), tag = ($("#evTag").value.trim() || name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const from = $("#evFrom").value, to = $("#evTo").value || from;
+  if (!name || !from) return openEventForm("Add a name and the first day");
+  const { error } = await sb.from("events").insert({ name, tag, starts_on: from, ends_on: to });
+  if (error) return openEventForm(error.message.includes("unique") ? "That tag is already used" : error.message);
+  $("#drawer").classList.remove("on"); toast("Event created."); refresh();
+}
+
+/* ---------- system (live) ---------- */
+VIEWS.system = () => {
+  const pushOn = SETTINGS.push_enabled === true, start = SETTINGS.stock_start ? new Date(SETTINGS.stock_start) : null;
+  const pill = (n, okText) => n ? `<span class="pill p-bad">${N(n)}</span>` : `<span class="pill p-good">${okText || "0"}</span>`;
+  return `<div class="grid">
+    <section class="card c6"><h2>Connections</h2>
+      <div class="list">
+        <div class="row"><span><b>Shopify retail</b><div class="muted">Orders, refunds and products by webhook. Stock pushed back by the Gilnokie Ops app</div></span><span class="pill p-good">Connected</span></div>
+        <div class="row"><span><b>Shopify wholesale</b><div class="muted">Orders, refunds and products by webhook</div></span><span class="pill p-good">Connected</span></div>
+        <div class="row"><span><b>Stock tracking started</b><div class="muted">Sales after this moment move stock</div></span><b>${start ? dLong(start) : "Not started"}</b></div>
+        <div class="row"><span><b>Push to Shopify</b><div class="muted">Changes waiting: ${N(CHECKS.pending)}</div></span>${pushOn ? `<span class="pill p-good">On</span>` : `<span class="pill p-warn">Paused</span>`}</div>
+      </div></section>
+    <section class="card c6"><h2>Data checks</h2>
+      <div class="list">
+        <div class="row"><span>Stock below zero (SKU × location)</span>${pill(CHECKS.negatives, "None")}</div>
+        <div class="row"><span>Differences with Shopify (last nightly check)</span>${pill(CHECKS.mismatches, "None")}</div>
+        <div class="row"><span>Stock pushes that failed</span>${pill(CHECKS.failed, "None")}</div>
+        <div class="row"><span>Retail variants without a SKU</span>${CHECKS.noSku ? `<span class="pill p-warn">${N(CHECKS.noSku)}</span>` : `<span class="pill p-good">None</span>`}</div>
+        <div class="row"><span>Variants without a barcode (search instead of scan)</span>${CHECKS.noBarcode ? `<span class="pill p-warn">${N(CHECKS.noBarcode)}</span>` : `<span class="pill p-good">None</span>`}</div>
+        ${CHECKS.unmatched != null ? `<div class="row"><span>Order lines with no product (custom items)</span><span class="pill p-retail">${N(CHECKS.unmatched)}</span></div>` : ""}
+      </div></section>
+    <section class="card c6"><h2>Locations</h2>
+      <div class="list">${ALL_LOCS.map(l => `<div class="row"><span>${esc(l.name)}</span>${ROLE === "admin" ? `<select class="sel" data-lk="${l.id}" aria-label="Type for ${esc(l.name)}">${["factory","store","events","customer","other"].map(k => `<option value="${k}" ${l.raw === k ? "selected" : ""}>${k[0].toUpperCase() + k.slice(1)}</option>`).join("")}</select>` : `<b>${l.kind}</b>`}</div>`).join("")}</div>
+      <p class="muted" style="margin:0">Factory: online and wholesale orders ship from here. Events: event reports use this location. Customer: stock sent here counts as sold (Takealot).</p></section>
+    <section class="card c6 kpi hero"><span class="lbl">Signed in as</span><span class="val" style="font-size:22px">${esc($("#who").textContent)}</span><span style="color:#bdbdbd">Role: ${ROLE === "admin" ? "Admin (everything)" : "Factory (stock, transfers, events, yarn)"}</span>
+      <div class="bar"><button class="btn" id="reload">Refresh data</button><button class="btn ghost" id="signOut">Sign out</button></div>
+      <span style="color:#bdbdbd">Powered by Fetchwave</span></section>
+  </div>`;
+};
+
+/* ---------- wiring ---------- */
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.id === "scan") { e.preventDefault(); addLine(e.target.value); }
+});
+document.addEventListener("change", async e => {
+  const id = e.target.id;
+  if (id === "trFrom") { TR.from = e.target.value; renderTransfer(); }
+  if (id === "trTo") { TR.to = e.target.value; renderTransfer(); }
+  if (id === "trEv") { TR.event = e.target.value; renderTransfer(); }
+  if (id === "scan" && findProduct(e.target.value) && productLabel(findProduct(e.target.value)) === e.target.value.trim()) addLine(e.target.value);
+  if (e.target.dataset.qi) { const l = TR.lines[+e.target.dataset.qi]; l.qty = Math.max(1, parseInt(e.target.value) || 1); renderTransfer(); }
+  if (id === "saLoc") { SA.loc = e.target.value; renderStockAction(); }
+  if (id === "saScan") { SA.p = findProduct(e.target.value); renderStockAction(SA.p ? "" : "Product not found"); }
+  if (id === "saQty") { SA.qty = e.target.value; renderStockAction(); }
+  if (e.target.dataset.lk) {
+    const { error } = await sb.rpc("set_location_kind", { p_location: Number(e.target.dataset.lk), p_kind: e.target.value });
+    error ? toast(error.message, true) : (toast("Location updated."), refresh());
+  }
+});
+document.addEventListener("click", e => {
+  const q = e.target.closest("[data-q]"); if (q) { const [i, d] = q.dataset.q.split(":").map(Number); TR.lines[i].qty = Math.max(1, TR.lines[i].qty + d); renderTransfer(); }
+  const rm = e.target.closest("[data-rm]"); if (rm) { TR.lines.splice(+rm.dataset.rm, 1); renderTransfer(); }
+  if (e.target.closest("#trDone")) saveTransfer(true);
+  if (e.target.closest("#trDraft")) saveTransfer(false);
+  if (e.target.closest("#saSave")) saveStockAction();
+  if (e.target.closest("#evSave")) saveEvent();
+});
 
 /* ===== PRODUCTS, YARN, SYSTEM ===== */
 VIEWS.yarn = () => {
@@ -741,6 +1204,6 @@ VIEWS.system = () => `
     <section class="card c6 kpi hero"><span class="lbl">Built and maintained by</span><span class="val" style="font-size:28px">Powered by Fetchwave</span><span style="color:#bdbdbd">Custom stock, sales and production system for Gilnokie.</span></section>
   </div>`;
 
-route();
+if (typeof BOOT === "function") BOOT(); else route();
 </script>
 </body></html>
